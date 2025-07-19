@@ -3,16 +3,22 @@ require('dotenv').config();
 // Environment configurations
 const environments = {
   staging: {
-   		port: process.env.APP_STAGING_ENV_PORT,
-    	envName: process.env.APP_STAGING_ENV_NAME,
+      host: process.env.DB_HOST || 'localhost',
+   		port: process.env.APP_STAGING_ENV_PORT || 3000,
+    	name: process.env.APP_STAGING_ENV_NAME || 'staging',
+      backlog: process.env.APP_BACKLOG || 511,
   	},
   	development: {
-  		port: process.env.APP_DEVELOPMENT_ENV_PORT,
-  		envName: process.env.APP_DEVELOPMENT_ENV_NAME,
+      host: process.env.DB_HOST || 'localhost',
+  		port: process.env.APP_DEVELOPMENT_ENV_PORT || 4000,
+  		name: process.env.APP_DEVELOPMENT_ENV_NAME || 'development',
+      backlog: process.env.APP_BACKLOG || 511,
 	},
   	production: {
-    	port: process.env.APP_PRODUCTION_ENV_PORT,
-    	envName: process.env.APP_PRODUCTION_ENV_NAME,
+      host: process.env.DB_HOST || 'localhost',
+    	port: process.env.APP_PRODUCTION_ENV_PORT || 5000,
+    	name: process.env.APP_PRODUCTION_ENV_NAME || 'production',
+      backlog: process.env.APP_BACKLOG || 511,
   	},
 };
 
