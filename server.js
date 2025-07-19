@@ -1,6 +1,6 @@
 const http = require('http');
 const env = require('./config/env');
-const Route = require('./app/routes/web');
+const Route = require('./routes/web');
 
 class AppServer {
 	constructor(port, host, backlog) {

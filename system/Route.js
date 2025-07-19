@@ -25,6 +25,7 @@ class Route {
 		this.register('DELETE', path, handler);
 	}
 
+	// Handle all incoming request
 	static resolve(req, res) {
 		const reqMethod = req.method;
 		const reqUrl = req.url.split('?')[0];
