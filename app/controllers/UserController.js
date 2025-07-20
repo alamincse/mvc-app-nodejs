@@ -3,11 +3,27 @@ const { hash } = require('../../helpers/utilities');
 const User = require('../models/User');
 
 class UserController {
+	async index(req, res) {
+		try {
+			const result = await User.all();
+
+			return response.json(res, {
+				success: true,
+				message: 'Success',
+				data: result,
+			});
+		} catch (err) {
+			console.log(err);
+
+			return response.error(res, 'Failed');
+		}
+	}
+
 	async store(req, res) {
 		try {
 			const user = {
 				name: 'Alamin',
-				email: 'alamin_php01@example.com',
+				email: 'alamin_php02@example.com',
 				password: hash('secret'), 
 			};
 
