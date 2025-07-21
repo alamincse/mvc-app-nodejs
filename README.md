@@ -77,3 +77,6 @@ class User extends Model {
 }
 
 module.exports = new User();</pre>
+
+## Author
+Al-Amin Sarker

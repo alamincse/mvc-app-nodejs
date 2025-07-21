@@ -112,6 +112,26 @@ class Model {
 		});
 	}
 
+	andWhere(fields) {
+		const whereClauses = [];
+		const values = [];
+
+		for (const [column, value] of Object.entries(fields)) {
+			whereClauses.push(`${column} = ?`);
+			values.push(value);
+		}
+
+		const sql = `SELECT * FROM ${this.table} WHERE ${whereClauses.join(' AND ')}`;
+
+		return new Promise((resolve, reject) => {
+			db.query(sql, values, (error, results) => {
+				if (error) return reject(error);
+
+				resolve(results[0] || null);
+			});
+		});
+	}
+
 
 	paginate(page = 1, perPage = 10) {
 		const offset = (page - 1) * perPage;
