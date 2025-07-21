@@ -5,7 +5,9 @@ const User = require('../models/User');
 class UserController {
 	async index(req, res) {
 		try {
-			const result = await User.all();
+			const currentPage = req.queryStringObject.currentPage;
+
+			const result = await User.paginate(currentPage);
 
 			return response.json(res, {
 				success: true,

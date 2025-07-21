@@ -1,3 +1,5 @@
+const url = require('url');
+
 class Route {
 	static routes = [];
 
@@ -36,6 +38,21 @@ class Route {
 
 		if (matchedRoute) {
 			// res.setHeader('Content-Type', 'application/json');
+
+			// get the url info and parse it
+			const parseUrl = url.parse(req.url, true);
+			const path = parseUrl.pathname;
+			const trimePath = path.replace(/^\/+|\/+$/g, '');
+			const method = req.method.toLowerCase();
+			const queryStringObject = parseUrl.query;
+			const headersObject = req.headers;
+
+			req.parseUrl = parseUrl;
+			req.path = path;
+			req.trimePath = trimePath;
+			req.queryStringObject = queryStringObject;
+			req.headersObject = headersObject;
+
 			// here controller methods are called!(handler = HomeController.index)
 			// console.log(matchedRoute);
 			matchedRoute.handler(req, res);
