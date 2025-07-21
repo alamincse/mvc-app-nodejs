@@ -41,6 +41,19 @@ utilities.getBearerToken = (headers) => {
 	return authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
 }
 
+utilities.normalizeFormData = (fields) => {
+	return Object.fromEntries(
+		Object.entries(fields).map(([key, val]) => {
+			if (Array.isArray(val) && val.length === 1) {
+				return [key, val[0]];
+			}
+			
+			return [key, val];
+		})
+	);
+}
+
+
 // verify user token
 // utilities.verifyToken = (tokenId, phone, callback) => {
 // 	data.read('tokens', tokenId, (tokenError, tokenData) => {
