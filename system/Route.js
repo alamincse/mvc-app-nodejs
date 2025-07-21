@@ -1,4 +1,7 @@
 const url = require('url');
+const { IncomingForm } = require('formidable');
+const { StringDecoder } = require('string_decoder');
+const { parseJSON, normalizeFormData } = require('../helpers/utilities');
 
 class Route {
 	static routes = [];
@@ -37,8 +40,6 @@ class Route {
 		);
 
 		if (matchedRoute) {
-			// res.setHeader('Content-Type', 'application/json');
-
 			// get the url info and parse it
 			const parseUrl = url.parse(req.url, true);
 			const path = parseUrl.pathname;
@@ -53,9 +54,53 @@ class Route {
 			req.queryStringObject = queryStringObject;
 			req.headersObject = headersObject;
 
-			// here controller methods are called!(handler = HomeController.index)
-			// console.log(matchedRoute);
-			matchedRoute.handler(req, res);
+			const contentType = req.headers['content-type'];
+
+			// Multipart/form-data handling
+			if (contentType.includes('multipart/form-data')) {
+				const form = new IncomingForm({ multiples: true });
+
+				form.parse(req, (err, fields, files) => {
+					if (err) {
+						res.writeHead(400);
+
+						return res.end('Failed to parse form');
+					}
+
+					req.body = normalizeFormData(fields);
+					req.files = files;
+
+					return matchedRoute.handler(req, res);
+				});
+
+				return;
+			}
+
+
+			// decode striming payload data 
+			const decoder = new StringDecoder('utf-8');
+			let buffer = '';
+
+			req.on('data', (chunk) => {
+				buffer += decoder.write(chunk);
+			});
+
+			req.on('end', () => {
+				buffer += decoder.end();
+
+				// Parse and attach body data
+				if (contentType?.includes('application/json')) { // For raw json data
+					req.body = parseJSON(buffer);
+				} else if (contentType.includes('application/x-www-form-urlencoded')) {
+					const params = new URLSearchParams(buffer);
+
+					req.body = Object.fromEntries(params.entries());
+				}
+
+				// here controller methods are called!(handler = HomeController.index)
+				// console.log(matchedRoute);
+				matchedRoute.handler(req, res);
+			});
 		} else {
 			res.writeHead(404, { 
 				'Content-Type': 'application/json' 

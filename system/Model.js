@@ -33,7 +33,19 @@ class Model {
 			db.query(sql, fieldValues, (error, result) => {
 				if (error) reject(error);
 
-				resolve(result);
+				const insertedId = result?.insertId;
+
+				if (insertedId) {
+					// Fetch and return full record by ID
+					const findSql = `SELECT * FROM ${this.table} WHERE id = ? LIMIT 1`;
+
+					db.query(findSql, [insertedId], (err, rows) => {
+						if (err) return reject(err);
+
+						// return full user object
+						resolve(rows[0]); 
+					});
+				}
 			});
 		});
 	}
