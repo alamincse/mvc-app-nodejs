@@ -23,13 +23,13 @@ class UserController {
 
 	async store(req, res) {
 		try {
-			const user = {
-				name: 'Alamin',
-				email: 'alamin_php02@example.com',
-				password: hash('secret'), 
-			};
+			const data = req.body;
 
-			const result = await User.create(user);
+			if (data.password) {
+				data.password = hash(data.password);
+			}
+
+			const result = await User.create(data);
 
 			console.log('User created');
 
