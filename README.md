@@ -29,8 +29,6 @@ A lightweight `Node.js` project that follows the **MVC (Model-View-Controller)**
 const Route = require('../system/Route');
 const UserController = require('../app/controllers/UserController');
 
-Route.get('/home', HomeController.index);
-
 Route.get('/users', UserController.index);
 Route.post('/users', UserController.store);
 
