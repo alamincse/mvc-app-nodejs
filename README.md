@@ -17,11 +17,10 @@ A lightweight `Node.js` project that follows the **MVC (Model-View-Controller)**
 - **npm install formidable** (Support `multipart/form-data` or `form-data` in postman)
 
 ## Migration Run (Table create)
-- **nodemon database**
+- `nodemon database`
 
 ## Start the server
-- `node server` or 
-- `nodemon server`
+- `node server` or `nodemon server`
 
 ## Route Define
 #### `routes/web.js`
@@ -42,21 +41,39 @@ const response = require('../../helpers/response');
 const User = require('../models/User');
 
 class UserController {
-	async index(req, res) {
-		try {
-			const result = await User.all();
+  async index(req, res) {
+	try {
+	  const result = await User.all();
 
-			return response.json(res, {
-				success: true,
-				message: 'Success',
-				data: result,
-			});
-		} catch (err) {
-			console.log(err);
+	  return response.json(res, {
+		success: true,
+		message: 'Success',
+		data: result,
+	  });
+	} catch (err) {
+	    console.log(err);
 
-			return response.error(res, 'Failed');
-		}
-	}
+	    return response.error(res, 'Failed');
+	 } 
+  }
 }
 
 module.exports = new UserController();</pre>
+
+
+## Model Define
+#### `app/models/User.js`
+<pre lang="js">
+const Model = require('../../system/Model');
+
+class User extends Model {
+  constructor() {
+	super('users', [
+	  'name',
+	  'email',
+	  'password',
+	]);
+  }
+}
+
+module.exports = new User();</pre>
