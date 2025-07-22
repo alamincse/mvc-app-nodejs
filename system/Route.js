@@ -1,33 +1,35 @@
-const url = require('url');
-const { IncomingForm } = require('formidable');
-const { StringDecoder } = require('string_decoder');
 const { parseJSON, normalizeFormData } = require('../helpers/utilities');
+const { StringDecoder } = require('string_decoder');
+const { IncomingForm } = require('formidable');
+const Middleware = require('./Middleware');
+const url = require('url');
 
 class Route {
 	static routes = [];
 
-	static register(method, path, handler) {
+	static register(method, path, handler, middlewares = []) {
 		this.routes.push({ 
 			method: method.toUpperCase(), 
 			path, 
 			handler,
+			middlewares,
 		});
 	}
 
-	static get(path, handler) {
-		this.register('GET', path, handler);
+	static get(path, handler, middlewares) {
+		this.register('GET', path, handler, middlewares);
 	}
 
-	static post(path, handler) {
-		this.register('POST', path, handler);
+	static post(path, handler, middlewares) {
+		this.register('POST', path, handler, middlewares);
 	}
 
-	static put(path, handler) {
-		this.register('PUT', path, handler);
+	static put(path, handler, middlewares) {
+		this.register('PUT', path, handler, middlewares);
 	}
 
-	static delete(path, handler) {
-		this.register('DELETE', path, handler);
+	static delete(path, handler, middlewares) {
+		this.register('DELETE', path, handler, middlewares);
 	}
 
 	// Handle all incoming request
@@ -70,7 +72,12 @@ class Route {
 					req.body = normalizeFormData(fields);
 					req.files = files;
 
-					return matchedRoute.handler(req, res);
+					// check route has applied middleware or not
+					if (matchedRoute.middlewares?.length) {
+						Middleware.handle(matchedRoute.middlewares, req, res, matchedRoute.handler);
+					} else {
+						matchedRoute.handler(req, res);
+					}
 				});
 
 				return;
@@ -99,7 +106,12 @@ class Route {
 
 				// here controller methods are called!(handler = HomeController.index)
 				// console.log(matchedRoute);
-				matchedRoute.handler(req, res);
+				// check route has applied middleware or not
+				if (matchedRoute.middlewares?.length) {
+					Middleware.handle(matchedRoute.middlewares, req, res, matchedRoute.handler);
+				} else {
+					matchedRoute.handler(req, res);
+				}
 			});
 		} else {
 			res.writeHead(404, { 
