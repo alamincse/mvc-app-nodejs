@@ -5,6 +5,7 @@ A lightweight `Node.js` project that follows the **MVC (Model-View-Controller)**
 ## Key Features
 - **Custom Routing System**
 - **MVC Folder Structure**
+- **Middleware Support**
 - **MySQL Integration (using `mysql` package)**
 - **Built-in password hashing with crypto**
 - **Handles `application/json`, `x-www-form-urlencoded`, and `multipart/form-data`**
@@ -26,11 +27,14 @@ A lightweight `Node.js` project that follows the **MVC (Model-View-Controller)**
 #### `routes/web.js`
 <pre lang="js">
 const Route = require('../system/Route');
+const AuthMiddleware = require('../app/middleware/AuthMiddleware');
 const UserController = require('../app/controllers/UserController');
 
 Route.get('/users', UserController.index);
 Route.post('/users', UserController.store);
 
+// add middleware(`AuthMiddleware`)
+Route.post('/users', UserController.store, [AuthMiddleware]); 
 module.exports = Route;</pre>
 
 
