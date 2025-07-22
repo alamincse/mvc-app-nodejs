@@ -1,4 +1,4 @@
-// const data = require('../lib/data');
+const Token = require('../app/models/Token');
 const crypto = require('crypto');
 
 // Utilities container
@@ -55,21 +55,21 @@ utilities.normalizeFormData = (fields) => {
 
 
 // verify user token
-// utilities.verifyToken = (tokenId, phone, callback) => {
-// 	data.read('tokens', tokenId, (tokenError, tokenData) => {
-// 		if (! tokenError && tokenData) {
-// 			const token = utilities.parseJSON(tokenData);
+utilities.verifyToken = async (bearerToken) => {
+	const token = await Token.where('token', bearerToken);
 
-// 			if (token.phone === phone && token.expires > Date.now()) {
-// 				callback(true);
-// 			} else {
-// 				callback(false);
-// 			}
-// 		} else {
-// 			callback(false);
-// 		}
-// 	});
-// }
+	if (! token) return false;
+
+	const now = new Date();
+	const expiresAt = new Date(token.expires_at);
+
+	if (expiresAt < now) return false;
+
+	return {
+		user_id: token.user_id,
+		token: token.token,
+	};
+}
 
 // validation rules
 utilities.validateToken = (token) => typeof token === 'string' && token.trim().length === 40 ? token.trim() : false;

@@ -39,6 +39,14 @@ class AuthController {
 			return response.error(res, 'Failed');
 		}
 	}
+
+	async logout(req, res) {
+		return response.json(res, {
+			success: true,
+			message: 'Success',
+			data: '',
+		});
+	}
 }
 
 module.exports = new AuthController();

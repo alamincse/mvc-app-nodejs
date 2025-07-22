@@ -107,7 +107,7 @@ class Model {
 			db.query(sql, [value], (err, results) => {
 				if (err) return reject(err);
 
-				resolve(results);
+				resolve(results[0] || null);
 			});
 		});
 	}
