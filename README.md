@@ -6,7 +6,8 @@ A lightweight `Node.js` project that follows the **MVC (Model-View-Controller)**
 - **Custom Routing System**
 - **MVC Folder Structure**
 - **Middleware Support**
-- **MySQL Integration (using `mysql` package)**
+- **Route Service Provider Support(For `web` and `api` routes with `/api` prefix by default)**
+- **MySQL Integration (using `mysql` driver)**
 - **Built-in password hashing with crypto**
 - **Handles `application/json`, `x-www-form-urlencoded`, and `multipart/form-data`**
 - **File Upload Support via `formidable`**
