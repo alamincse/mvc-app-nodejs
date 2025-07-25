@@ -1,13 +1,13 @@
-const { parseJSON, normalizeFormData } = require('../helpers/utilities');
+const { parseJSON, normalizeFormData } = require('../helpers/utilities') ;
 const { StringDecoder } = require('string_decoder');
 const { IncomingForm } = require('formidable');
 const Middleware = require('./Middleware');
 const url = require('url');
 
 class Route {
-	static routes = [];
+	routes = [];
 
-	static register(method, path, handler, middlewares = []) {
+	register(method, path, handler, middlewares = []) {
 		this.routes.push({ 
 			method: method.toUpperCase(), 
 			path, 
@@ -16,24 +16,24 @@ class Route {
 		});
 	}
 
-	static get(path, handler, middlewares) {
+	get(path, handler, middlewares) {
 		this.register('GET', path, handler, middlewares);
 	}
 
-	static post(path, handler, middlewares) {
+	post(path, handler, middlewares) {
 		this.register('POST', path, handler, middlewares);
 	}
 
-	static put(path, handler, middlewares) {
+	put(path, handler, middlewares) {
 		this.register('PUT', path, handler, middlewares);
 	}
 
-	static delete(path, handler, middlewares) {
+	delete(path, handler, middlewares) {
 		this.register('DELETE', path, handler, middlewares);
 	}
 
 	// Handle all incoming request
-	static resolve(req, res) {
+	resolve(req, res) {
 		const reqMethod = req.method;
 		const reqUrl = req.url.split('?')[0];
 
@@ -122,10 +122,19 @@ class Route {
 			}));
 		}
 	}
+
+	merge(otherRouter) {
+		this.routes.push(...otherRouter?.routes);
+	}
+
+	mergeWithPrefix(otherRouter, prefix = '') {
+		otherRouter?.routes?.forEach(route => {
+			this.routes.push({
+				...route,
+				path: prefix + route.path,
+			});
+		});
+	}
 }
 
-/**
- * Note: If methods are not static then we need to create object then exports!
- * like: const route = new Route; module.exports = routes;
-*/
 module.exports = Route;

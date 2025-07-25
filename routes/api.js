@@ -1,4 +1,4 @@
-const Route = require('../system/WebRoute');
+const Route = require('../system/ApiRoute');
 
 const AuthMiddleware = require('../app/middleware/AuthMiddleware');
 const HomeController = require('../app/controllers/HomeController');
