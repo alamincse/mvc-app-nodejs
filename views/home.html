@@ -14,15 +14,19 @@
 			<form id="loginForm">
 				<div class="mb-3">
 					<label for="email" class="form-label">Email</label>
-					<input type="email" class="form-controll" id="email" name="email" placeholder="Enter email" required>
+					<input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
 				</div>
 
 				<div class="mb-3">
 					<label for="password" class="form-label">Password</label>
-					<input type="password" class="form-controll" id="password" name="password" placeholder="Enter password" required>
+					<input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
 				</div>
 
 				<button type="submit" class="btn btn-primary w-100">Login</button>
+
+				<div class="text-center mt-3">
+					<a href="/register" class="text-decoration-none">Don't have an account?</a>
+				</div>
 			</form>
 		</div>
 	</div>
@@ -34,25 +38,22 @@
 			let email = document.getElementById('email').value;
 			let password = document.getElementById('password').value;
 
-			let res = await fetch('/api/login', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
+			try {
+				let res = await axios.post('/api/login', {
 					email: email,
 					password: password,
-				}),
-			});
+				});
 
-			let data = await res.json();
+				// Success
+				localStorage.setItem('authToken', res?.data?.token);
 
-			if (res.ok) {
-				localStorage.setItem('authToken', data.token);
-				
 				window.location.href = '/profile';
-			} else {
-				alert(data.message || 'Login failed')
+			} catch (error) {
+				if (error.response) {
+					alert(error.response.data.message || 'Login failed');
+				} else {
+					alert('Something went wrong');
+				}
 			}
 		});
 	</script>

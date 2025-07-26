@@ -14,20 +14,23 @@
 			<form id="registerForm">
 				<div class="mb-3">
 					<label for="name" class="form-label">Name</label>
-					<input type="text" class="form-controll" id="name" name="name" placeholder="Enter name" required>
+					<input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required>
 				</div>
 
 				<div class="mb-3">
 					<label for="email" class="form-label">Email</label>
-					<input type="email" class="form-controll" id="email" name="email" placeholder="Enter email" required>
+					<input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
 				</div>
 
 				<div class="mb-3">
 					<label for="password" class="form-label">Password</label>
-					<input type="password" class="form-controll" id="password" name="password" placeholder="Enter password" required>
+					<input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
 				</div>
 
-				<button type="submit" class="btn btn-primary w-100">Register</button>
+				<div class="d-flex justify-content-between">
+					<button type="submit" class="btn btn-primary">Register</button>
+					<a href="/home" class="btn btn-secondary">Back to Login</a>
+				</div>
 			</form>
 		</div>
 	</div>
@@ -40,24 +43,20 @@
 			let email = document.getElementById('email').value;
 			let password = document.getElementById('password').value;
 
-			let res = await fetch('/api/users', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
+			try {
+				let res = await axios.post('/api/users', {
 					name: name,
 					email: email,
 					password: password,
-				}),
-			});
+				});
 
-			let data = await res.json();
-
-			if (res.ok) {
 				alert('Registration Success');
-			} else {
-				alert(data.message || 'Register failed')
+			} catch (error) {
+				if (error.response) {
+					alert(error.response.data.message || 'Register failed');
+				} else {
+					alert('Something went wrong');
+				}
 			}
 		});
 	</script>
