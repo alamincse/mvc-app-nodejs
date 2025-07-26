@@ -8,26 +8,77 @@
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
 </head>
 <body>
-	<div class="container mt-5" style="max-width: 600px;">
-		<div class="d-flex justify-content-between align-items-center mb-4">
-			<h3>Welcome, <span id="userName"></span></h3>
-			<button id="logout" class="btn btn-danger">Logout</button>
-		</div>
+	<div class="container mt-5">
+		<div class="profile-container">
+			<div class="d-flex justify-content-between align-items-center mb-4">
+				<h3>Welcome, <span id="userName"></span></h3>
+				<button id="logout" class="btn btn-danger">Logout</button>
+			</div>
 
-		<p>This is my profile page</p>
+			<h5>Register User List</h5>
+		  	<table class="table table-striped" id="usersTable" style="display: none;">
+		    	<thead>
+		      		<tr>
+				        <th>#</th>
+				        <th>Name</th>
+				        <th>Email</th>
+		      		</tr>
+		    	</thead>
+		    	
+		    	<tbody></tbody>
+		  	</table>
+		</div>
 	</div>
 
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script type="text/javascript">
 		const token = localStorage.getItem('authToken');
+		const userId = localStorage.getItem('userId');
 
 		if (! token) {
 			window.location.href = '/home';
 		} else {
-			document.getElementById('userName').textContent = 'User';
+			document.getElementById('userName').textContent = userId;
+
+			axios.get('/api/users', {
+			  	headers: {
+			    	Authorization: `Bearer ${token}`
+			  	}
+			}).then(response => {
+			  	let users = response?.data?.data;
+
+		      	if (Array.isArray(users) && users.length > 0) {
+			        const tbody = document.querySelector('#usersTable tbody');
+
+			        tbody.innerHTML = ''; // clear existing rows
+
+			        users.forEach((user, index) => {
+			          const tr = document.createElement('tr');
+
+			          tr.innerHTML = `
+			            <td>${index + 1}</td>
+			            <td>${user.name || '-'}</td>
+			            <td>${user.email || '-'}</td>
+			          `;
+
+			          tbody.appendChild(tr);
+			        });
+
+			        // Show the table after data loaded
+			        document.getElementById('usersTable').style.display = 'table';
+		      	} else {
+			        document.getElementById('usersTable').style.display = 'none';
+
+			        alert('No users found');
+		      	}
+			}).catch(error => {
+			  	console.error(error);
+			});
 		}
 
 		document.getElementById('logout').addEventListener('click', () => {
 			localStorage.removeItem('authToken');
+			localStorage.removeItem('userId');
 
 			window.location.href = '/home';
 		});

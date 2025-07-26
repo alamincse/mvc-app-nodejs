@@ -31,6 +31,7 @@
 		</div>
 	</div>
 
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script type="text/javascript">
 		document.getElementById('loginForm').addEventListener('submit', async function (e) {
 			e.preventDefault();
@@ -45,7 +46,10 @@
 				});
 
 				// Success
-				localStorage.setItem('authToken', res?.data?.token);
+				let data = res?.data?.data;
+
+				localStorage.setItem('authToken', data?.token);
+				localStorage.setItem('userId', data?.user_id);
 
 				window.location.href = '/profile';
 			} catch (error) {

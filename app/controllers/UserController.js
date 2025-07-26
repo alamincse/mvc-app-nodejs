@@ -7,7 +7,8 @@ class UserController {
 		try {
 			const currentPage = req.queryStringObject.currentPage;
 
-			const result = await User.paginate(currentPage);
+			// const result = await User.paginate(currentPage);
+			const result = await User.all();
 
 			return response.json(res, {
 				success: true,
