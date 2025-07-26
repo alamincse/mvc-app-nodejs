@@ -58,8 +58,8 @@ class Route {
 
 			const contentType = req.headers['content-type'];
 
-			// Multipart/form-data handling
-			if (contentType.includes('multipart/form-data')) {
+			// check postman api! Multipart/form-data handling
+			if (contentType?.includes('multipart/form-data')) {
 				const form = new IncomingForm({ multiples: true });
 
 				form.parse(req, (err, fields, files) => {
@@ -95,10 +95,10 @@ class Route {
 			req.on('end', () => {
 				buffer += decoder.end();
 
-				// Parse and attach body data
+				// check postmant api! Parse and attach body data
 				if (contentType?.includes('application/json')) { // For raw json data
 					req.body = parseJSON(buffer);
-				} else if (contentType.includes('application/x-www-form-urlencoded')) {
+				} else if (contentType?.includes('application/x-www-form-urlencoded')) {
 					const params = new URLSearchParams(buffer);
 
 					req.body = Object.fromEntries(params.entries());
