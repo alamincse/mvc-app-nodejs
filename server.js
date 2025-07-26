@@ -1,3 +1,6 @@
+// Start first all global helper methods!
+require('./helpers/globalHelpers');
+
 const http = require('http');
 const env = require('./config/env');
 const Route = require('./app/providers/RouteServiceProvider');
