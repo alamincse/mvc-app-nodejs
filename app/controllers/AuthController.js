@@ -16,6 +16,12 @@ class AuthController {
 							password: hashPassword
 						});
 
+			if (! user) {
+				dd('User not found!');
+
+				return response.error(res, 'Failed');
+			}
+
 			const tokenId = createRandomString(40);
 			const now = new Date();
 			const bdOffset = 6 * 60 * 60 * 1000; // +6 min

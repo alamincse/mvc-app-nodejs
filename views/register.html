@@ -10,8 +10,13 @@
 <body>
 	<div class="container">
 		<div class="login-container">
-			<h3 class="text-center mb-4">Login</h3>
-			<form id="loginForm">
+			<h3 class="text-center mb-4">Register</h3>
+			<form id="registerForm">
+				<div class="mb-3">
+					<label for="name" class="form-label">Name</label>
+					<input type="text" class="form-controll" id="name" name="name" placeholder="Enter name" required>
+				</div>
+
 				<div class="mb-3">
 					<label for="email" class="form-label">Email</label>
 					<input type="email" class="form-controll" id="email" name="email" placeholder="Enter email" required>
@@ -22,24 +27,26 @@
 					<input type="password" class="form-controll" id="password" name="password" placeholder="Enter password" required>
 				</div>
 
-				<button type="submit" class="btn btn-primary w-100">Login</button>
+				<button type="submit" class="btn btn-primary w-100">Register</button>
 			</form>
 		</div>
 	</div>
 
 	<script type="text/javascript">
-		document.getElementById('loginForm').addEventListener('submit', async function (e) {
+		document.getElementById('registerForm').addEventListener('submit', async function (e) {
 			e.preventDefault();
 
+			let name = document.getElementById('name').value;
 			let email = document.getElementById('email').value;
 			let password = document.getElementById('password').value;
 
-			let res = await fetch('/api/login', {
+			let res = await fetch('/api/users', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
+					name: name,
 					email: email,
 					password: password,
 				}),
@@ -48,11 +55,9 @@
 			let data = await res.json();
 
 			if (res.ok) {
-				localStorage.setItem('authToken', data.token);
-				
-				window.location.href = '/profile';
+				alert('Registration Success');
 			} else {
-				alert(data.message || 'Login failed')
+				alert(data.message || 'Register failed')
 			}
 		});
 	</script>

@@ -6,9 +6,8 @@ const UserController = require('../app/controllers/UserController');
 const AuthController = require('../app/controllers/AuthController');
 
 Route.get('/home', HomeController.index);
-
-Route.get('/users', UserController.index);
-Route.post('/users', UserController.store);
+Route.get('/register', HomeController.register);
+Route.get('/profile', HomeController.profile);
 
 Route.post('/login', AuthController.create);
 Route.post('/logout', AuthController.logout, [AuthMiddleware]);

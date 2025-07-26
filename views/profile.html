@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>{{ title }}</title>
+
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+	<div class="container mt-5" style="max-width: 600px;">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h3>Welcome, <span id="userName"></span></h3>
+			<button id="logout" class="btn btn-danger">Logout</button>
+		</div>
+
+		<p>This is my profile page</p>
+	</div>
+
+	<script type="text/javascript">
+		const token = localStorage.getItem('authToken');
+
+		if (! token) {
+			window.location.href = '/home';
+		} else {
+			document.getElementById('userName').textContent = 'User';
+		}
+
+		document.getElementById('logout').addEventListener('click', () => {
+			localStorage.removeItem('authToken');
+
+			window.location.href = '/home';
+		});
+	</script>
+</body>
+</html>
