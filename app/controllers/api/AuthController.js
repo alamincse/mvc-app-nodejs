@@ -1,4 +1,4 @@
-const { hash, createRandomString, parseCookies, toBDTime } = require('../../../helpers/utilities');
+const { hash, createRandomString, parseCookies, toBDTime, getBearerToken, validateToken, verifyToken } = require('../../../helpers/utilities');
 const response = require('../../../helpers/response');
 const Token = require('../../models/Token');
 const User = require('../../models/User');
@@ -67,14 +67,14 @@ class AuthController {
 
 	async logout(req, res) {
 		try {
-			const cookies = parseCookies(req.headers.cookie || '');
-		  	const token = cookies['session_token'];
+		  	const token = getBearerToken(req.headers);
 
-		  	if (! token) {
-	    		res.writeHead(302, { Location: '/home' });
+		  	const validToken = validateToken(token);
+			const tokenData = await verifyToken(token);
 
-			    return res.end();
-		  	}
+		  	if (! token && !validToken && !tokenData) {
+				return response.error(res, 'Invalid token');
+			}
 
 		  	await Token.deleteByColumn('token', token);
 
