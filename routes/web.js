@@ -8,8 +8,7 @@ const AuthController = require('../app/controllers/AuthController');
 
 Route.get('/home', HomeController.index, [RedirectIfAuthenticated]);
 Route.get('/register', HomeController.register, [RedirectIfAuthenticated]);
-Route.get('/profile', HomeController.profile, [AuthCookieMiddleware]);
 
-Route.post('/logout', AuthController.logout, [AuthCookieMiddleware]);
+Route.get('/profile', HomeController.profile, [AuthCookieMiddleware]);
 
 module.exports = Route;

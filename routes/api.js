@@ -4,7 +4,7 @@ const AuthMiddleware = require('../app/middleware/AuthMiddleware');
 const UserController = require('../app/controllers/UserController');
 const AuthController = require('../app/controllers/AuthController');
 
-Route.get('/users', UserController.index);
+Route.get('/users', UserController.index, [AuthMiddleware]);
 Route.post('/users', UserController.store);
 
 Route.post('/login', AuthController.create);
