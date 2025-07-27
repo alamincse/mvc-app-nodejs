@@ -71,6 +71,31 @@ class UserController {
 			return response.error(res, 'Failed to create user');
 		}
 	}
+
+	async delete(req, res) {
+		try {
+			const userId = req?.body?.id;
+
+			const user = await User.find(userId);
+
+			if (! user) {
+				return response.error(res, 'User not found');
+			}
+
+			// Delete user & user token
+			await User.deleteByColumn('id', userId);
+
+		    return response.json(res, {
+				success: true,
+				message: 'Success',
+				data: 'ok',
+			});
+		} catch (err) {
+			console.log(err);
+
+			return response.error(res, 'Failed to delete user');
+		}
+	}
 }
 
 module.exports = new UserController();
