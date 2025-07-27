@@ -23,6 +23,7 @@
 				        <th>Name</th>
 				        <th>Email</th>
 				        <th>Join Date</th>
+				        <th>Action</th>
 		      		</tr>
 		    	</thead>
 		    	
@@ -33,6 +34,26 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script type="text/javascript">
+		function deleteItem(id) {
+			if (confirm('Are you sure want to delete this item ?')) {
+				try {
+					const token = localStorage.getItem('authToken');
+
+					const response = axios.post('/api/users/delete', {
+						id: id,
+					}, {
+						headers: {
+							Authorization: `Bearer ${token}`
+						}
+					});
+
+					window.location.href = '/profile';
+				} catch (err) {
+					console.error('Error fetching user:', err.response?.data || err.message);
+				}
+			}
+		}
+
 		(async () => {
 			const token = localStorage.getItem('authToken');
 			const userId = localStorage.getItem('userId');
@@ -92,6 +113,10 @@
 									timeStyle: 'short',
 								})
 							}</td>
+							<td>
+								<button id="btnEdit" class="btn btn-sm btn-primary">Edit</button>
+								<button id="btnDelete" class="btn btn-sm btn-danger" onclick="deleteItem(${user.id})">Delete</button>
+							</td>
 			            `;
 
 			            tbody.appendChild(tr);
