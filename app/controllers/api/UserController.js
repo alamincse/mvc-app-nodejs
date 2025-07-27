@@ -22,6 +22,31 @@ class UserController {
 		}
 	}
 
+	async show(req, res) {
+		try {
+			const userId = req?.body?.id;
+
+			const user = await User.find(userId);
+
+			if (! user) {
+				return response.error(res, 'User not found');
+			}
+
+			// password field remove
+			delete user.password;
+
+			return response.json(res, {
+				success: true,
+				message: 'Success',
+				data: user,
+			});
+		} catch (err) {
+			console.log(err);
+
+			return response.error(res, 'Failed to create user');
+		}
+	}
+
 	async store(req, res) {
 		try {
 			const data = req.body;

@@ -26,7 +26,7 @@ class RouteServiceProvider {
 			Router.mergeWithPrefix(apiRoutes, '/api');
 		}
 
-		console.log(Router) 
+		// console.log(Router) 
 
 		// return all Routes(web + api)
 		return Router; 

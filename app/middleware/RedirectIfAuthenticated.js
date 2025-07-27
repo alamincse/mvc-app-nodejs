@@ -3,7 +3,6 @@ const { validateToken, verifyToken, parseCookies } =  require('../../helpers/uti
 class RedirectIfAuthenticated {
 	handle = async (req, res, next) => {
 		try {
-			console.log(req.headers.cookie);
 		    const cookies = parseCookies(req.headers.cookie || '');
 
 		    const token = cookies['session_token'];
