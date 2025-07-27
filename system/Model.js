@@ -112,6 +112,10 @@ class Model {
 		});
 	}
 
+	// fields = {
+	// 	name: 'alamin',
+	// 	email: 'alamin@gmail.com',
+	// };
 	andWhere(fields) {
 		const whereClauses = [];
 		const values = [];
@@ -183,6 +187,18 @@ class Model {
 
 		return new Promise((resolve, reject) => {
 			db.query(sql, [id], (error, result) => {
+				if (error) return reject(error);
+
+				resolve(result);
+			});
+		});
+	}
+
+	deleteByColumn(column, value) {
+		const sql = `DELETE FROM ${this.table} WHERE ${column} = ?`;
+
+		return new Promise((resolve, reject) => {
+			db.query(sql, [value], (error, result) => {
 				if (error) return reject(error);
 
 				resolve(result);

@@ -71,6 +71,12 @@ utilities.verifyToken = async (bearerToken) => {
 	};
 }
 
+utilities.parseCookies = (cookieHeader = '') => {
+    return Object.fromEntries(
+  		cookieHeader.split(';').map(c => c.trim().split('='))
+    );
+}
+
 // validation rules
 utilities.validateToken = (token) => typeof token === 'string' && token.trim().length === 40 ? token.trim() : false;
 

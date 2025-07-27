@@ -1,4 +1,4 @@
-const { hash, createRandomString } = require('../../helpers/utilities');
+const { hash, createRandomString, parseCookies } = require('../../helpers/utilities');
 const response = require('../../helpers/response');
 const Token = require('../models/Token');
 const User = require('../models/User');
@@ -47,11 +47,28 @@ class AuthController {
 	}
 
 	async logout(req, res) {
-		return response.json(res, {
-			success: true,
-			message: 'Success',
-			data: '',
-		});
+		try {
+			const cookies = parseCookies(req.headers.cookie || '');
+		  	const token = cookies['session_token'];
+
+		  	if (! token) {
+	    		res.writeHead(302, { Location: '/home' });
+
+			    return res.end();
+		  	}
+
+		  	await Token.deleteByColumn('token', token);
+
+		    return response.json(res, {
+				success: true,
+				message: 'Success',
+				data: 'ok',
+			});
+		} catch (error) {
+		    console.error('Logout error:', error);
+
+		   return response.error(res, 'Failed');
+		}
 	}
 }
 

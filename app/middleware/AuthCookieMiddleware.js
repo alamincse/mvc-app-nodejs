@@ -1,15 +1,10 @@
-const { validateToken, verifyToken } =  require('../../helpers/utilities');
+const { validateToken, verifyToken, parseCookies } =  require('../../helpers/utilities');
 
 class AuthCookieMiddleware {
-	parseCookies = (cookieHeader = '') => {
-	    return Object.fromEntries(
-	      cookieHeader.split(';').map(c => c.trim().split('='))
-	    );
-  	}
-
 	handle = async (req, res, next) => {
 		try {
-		    const cookies = this.parseCookies(req.headers.cookie || '');
+			console.log(req.headers.cookie);
+		    const cookies = parseCookies(req.headers.cookie || '');
 
 		    const token = cookies['session_token'];
 		    const validToken = validateToken(token);

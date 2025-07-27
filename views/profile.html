@@ -76,11 +76,28 @@
 			});
 		}
 
-		document.getElementById('logout').addEventListener('click', () => {
-			localStorage.removeItem('authToken');
-			localStorage.removeItem('userId');
+		// Logout button click handler
+		document.getElementById('logout').addEventListener('click', async () => {
+			try {
+				await axios.post('/api/logout', null, {
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				});
 
-			window.location.href = '/home';
+				// Clear localStorage
+				localStorage.removeItem('authToken');
+				localStorage.removeItem('userId');
+
+				// Cookie clear
+    			document.cookie = 'session_token=; Path=/; Max-Age=0';
+
+				// Redirect to home
+				window.location.href = '/home';
+			} catch (error) {
+				console.error('Logout failed:', error);
+				alert('Logout failed');
+			}
 		});
 	</script>
 </body>

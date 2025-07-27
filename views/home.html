@@ -56,16 +56,16 @@
 
 				const diffMs = expiresAt.getTime() - now.getTime(); // milliseconds diff
 				const diffSeconds = Math.floor(diffMs / 1000); // seconds
-				console.log(diffSeconds)
+				// console.log(diffSeconds)
 
 				if (diffSeconds > 0) {
-				  document.cookie = `session_token=${data?.token}; path=/; HttpOnly; max-age=${diffSeconds}`;
+			  		document.cookie = `session_token=${data?.token}; path=/; max-age=${diffSeconds}`;
 				} 
 
 				// Cookie set (expires in 1 hour)
-				// document.cookie = `session_token=${data?.token}; path=/; HttpOnly; max-age=3600`;
+				// document.cookie = `session_token=${data?.token}; path=/; max-age=3600`;
 
-				// window.location.href = '/profile';
+				window.location.href = '/profile';
 			} catch (error) {
 				if (error.response) {
 					alert(error.response.data.message || 'Login failed');
