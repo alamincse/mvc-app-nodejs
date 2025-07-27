@@ -51,16 +51,7 @@
 				localStorage.setItem('authToken', data?.token);
 				localStorage.setItem('userId', data?.user_id);
 
-				const expiresAt = new Date(data?.expires_at);
-				const now = new Date();
-
-				const diffMs = expiresAt.getTime() - now.getTime(); // milliseconds diff
-				const diffSeconds = Math.floor(diffMs / 1000); // seconds
-				// console.log(diffSeconds)
-
-				if (diffSeconds > 0) {
-			  		document.cookie = `session_token=${data?.token}; path=/; max-age=${diffSeconds}`;
-				} 
+		  		document.cookie = `session_token=${data?.token}; path=/; max-age=${data?.expired_at}`;
 
 				// Cookie set (expires in 1 hour)
 				// document.cookie = `session_token=${data?.token}; path=/; max-age=3600`;

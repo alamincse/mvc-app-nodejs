@@ -1,4 +1,4 @@
-const { hash, createRandomString, parseCookies } = require('../../../helpers/utilities');
+const { hash, createRandomString, parseCookies, toBDTime } = require('../../../helpers/utilities');
 const response = require('../../../helpers/response');
 const Token = require('../../models/Token');
 const User = require('../../models/User');
@@ -24,15 +24,34 @@ class AuthController {
 
 			const tokenId = createRandomString(40);
 			const now = new Date();
-			const bdOffset = 6 * 60 * 60 * 1000; // +6 min
-			const plusOneHour = 1 * 60 * 60 * 1000;
-  			const expires = new Date(now.getTime() + bdOffset + plusOneHour); // 1 hour
+			
+			// get BD time
+			const bdTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Dhaka' }));
+
+			// 1 hour extra
+			const bdExpires = new Date(bdTime.getTime() + 1 * 60 * 60 * 1000);
+
+			const expires = bdExpires.toLocaleString('sv-SE', {
+								timeZone: 'Asia/Dhaka',
+								hour12: false
+							}).replace(' ', 'T');
+
 
   			const token = await Token.create({
 							user_id: user?.id,
 							token: tokenId,
 							expires_at: expires
 						});
+
+  			token.created_at = toBDTime(token.created_at);
+  			token.updated_at = toBDTime(token.updated_at);
+  			token.expires_at = toBDTime(token.expires_at);
+
+  			const expiresAt = new Date(token.expires_at);
+  			const diffMs = expiresAt.getTime() - now.getTime(); // milliseconds diff
+			const diffSeconds = Math.floor(diffMs / 1000); // seconds
+
+			token.expired_at = diffSeconds;
 
 			return response.json(res, {
 				success: true,

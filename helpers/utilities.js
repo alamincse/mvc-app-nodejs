@@ -71,6 +71,15 @@ utilities.verifyToken = async (bearerToken) => {
 	};
 }
 
+utilities.toBDTime = (date) => {
+	const utcDate = new Date(date);
+
+	return utcDate.toLocaleString('sv-SE', {
+		timeZone: 'Asia/Dhaka',
+		hour12: false
+	}).replace(' ', 'T')
+}
+
 utilities.parseCookies = (cookieHeader = '') => {
     return Object.fromEntries(
   		cookieHeader.split(';').map(c => c.trim().split('='))
