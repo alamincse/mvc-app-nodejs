@@ -1,7 +1,7 @@
-const { hash, createRandomString, parseCookies } = require('../../helpers/utilities');
-const response = require('../../helpers/response');
-const Token = require('../models/Token');
-const User = require('../models/User');
+const { hash, createRandomString, parseCookies } = require('../../../helpers/utilities');
+const response = require('../../../helpers/response');
+const Token = require('../../models/Token');
+const User = require('../../models/User');
 
 class AuthController {
 	async create(req, res) {

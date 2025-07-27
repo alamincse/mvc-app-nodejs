@@ -1,4 +1,4 @@
-const response = require('../../helpers/response');
+const response = require('../../../helpers/response');
 
 class HomeController {
 	async index(req, res) {
