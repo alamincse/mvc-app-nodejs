@@ -81,7 +81,14 @@ class Model {
 			db.query(sql, [...values, id], (error, result) => {
 				if (error) return reject(error);
 
-				resolve(result[0] || null);
+				// Now fetch the updated record
+				const selectSql = `SELECT * FROM ${this.table} WHERE id = ? LIMIT 1`;
+
+				db.query(selectSql, [id], (selectError, rows) => {
+					if (selectError) return reject(selectError);
+					
+					resolve(rows[0] || null);
+				});
 			});
 		});
 	}
