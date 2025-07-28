@@ -145,13 +145,15 @@ class User extends Model {
 module.exports = new User();</pre>
 
 ## View System
-The `View.js` engine renders HTML files with `{{ title }}` and `{{ content }}` placeholders, like a mini Blade or EJS system.
+The `View.js` engine renders HTML files with `{{ title }}` and `{{ content }}` placeholders, like a mini `Blade` or `EJS` system.
 <!-- views/layouts/main.html -->
 	<html>
-	  <head><title>{{ title }}</title></head>
-	  <body>
-	    {{ content }}
-	  </body>
+		<head>
+	  		<title>{{ title }}</title>
+  		</head>
+	  	<body>
+    		{{ content }}
+	  	</body>
 	</html>
 
 ## Environment Variables
