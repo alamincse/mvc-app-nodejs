@@ -87,6 +87,14 @@ const UserController = require('../app/controllers/UserController');
 Route.get('/users', UserController.index);
 Route.post('/users', UserController.store);
 
+module.exports = Route;</pre>
+
+## Middleware
+<pre lang="js">
+const Route = require('../system/Route');
+const AuthMiddleware = require('../app/middleware/AuthMiddleware');
+const UserController = require('../app/controllers/UserController');
+
 // add middleware(`AuthMiddleware`)
 Route.post('/users', UserController.store, [AuthMiddleware]); 
 module.exports = Route;</pre>
@@ -135,6 +143,16 @@ class User extends Model {
 }
 
 module.exports = new User();</pre>
+
+## View System
+The `View.js` engine renders HTML files with `{{ title }}` and `{{ content }}` placeholders, like a mini Blade or EJS system.
+<!-- views/layouts/main.html -->
+	<html>
+	  <head><title>{{ title }}</title></head>
+	  <body>
+	    {{ content }}
+	  </body>
+	</html>
 
 ## Environment Variables
 <pre lang="bash">
