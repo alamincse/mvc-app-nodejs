@@ -13,6 +13,7 @@ A lightweight **Node.js** project that follows the **MVC (Model-View-Controller)
 - **Custom View Engine (`View.js`)**
 - **Bootstrap Frontend (inside `/public`)**
 - **File Upload Support via `formidable`**
+- **Form Input Fields Validation (`Server-side` validation with customizable `rules` and `messages`)**
 - **Request Body Parsing**
 
   &emsp;• `application/json`  
