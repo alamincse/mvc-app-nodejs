@@ -19,6 +19,38 @@
 	    	
 	    	<tbody></tbody>
 	  	</table>
+
+	  	<!-- Update User Modal -->
+		<div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="updateUserModalLabel" aria-hidden="true">
+	  		<div class="modal-dialog modal-md">
+		    	<div class="modal-content">
+		      		<form id="updateUserForm">
+		        		<div class="modal-header">
+		          			<h5 class="modal-title" id="updateUserModalLabel">Update User</h5>
+		          			<button type="button" class="btn-sm btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		        		</div>
+
+		        		<div class="modal-body">
+		          			<div class="mb-2">
+		            			<label for="name" class="form-label">Name</label>
+		            			<input type="text" class="form-control form-control-sm" id="name" required>
+		          			</div>
+		          			<div class="mb-2">
+					            <label for="email" class="form-label">Email</label>
+					            <input type="email" class="form-control form-control-sm" id="email" required>
+		          			</div>
+		          			
+		          			<input type="hidden" id="userId">
+		        		</div>
+
+		        		<div class="modal-footer">
+		          			<button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+		          			<button type="submit" class="btn btn-sm btn-success">Update</button>
+		        		</div>
+		      		</form>
+		    	</div>
+		  	</div>
+		</div>
 	</div>
 </div>
 
@@ -103,7 +135,18 @@
 							})
 						}</td>
 						<td>
-							<button id="btnEdit" class="btn btn-sm btn-primary">Edit</button>
+							<button 
+								type="button" 
+								class="btn btn-sm btn-primary" 
+								data-bs-toggle="modal" 
+								data-bs-target="#updateUserModal"
+								data-id="${user.id}"
+								data-name="${user.name}"
+								data-email="${user.email}"
+							>
+								Edit
+							</button>
+
 							<button id="btnDelete" class="btn btn-sm btn-danger" onclick="deleteItem(${user.id})">Delete</button>
 						</td>
 		            `;
@@ -145,5 +188,59 @@
 				alert('Logout failed');
 			}
 		});
+
+
+		// get Bootstrap modal instance
+	  	const updateUserModal = document.getElementById('updateUserModal');
+
+	  	// data put into the input fields when modal display
+	  	updateUserModal.addEventListener('show.bs.modal', function (event) {
+	  		// which Edit button is clicked
+	    	const button = event.relatedTarget; 
+
+	    	// get value from the data-* attributes
+		    const userId = button.getAttribute('data-id');
+		    const name = button.getAttribute('data-name');
+		    const email = button.getAttribute('data-email');
+
+	    	// put the value into the modal input fields
+		    document.getElementById('userId').value = userId;
+		    document.getElementById('name').value = name;
+		    document.getElementById('email').value = email;
+	  	});
+
+		// User update
+		document.getElementById('updateUserForm').addEventListener('submit', async function (e) {
+		    e.preventDefault();
+
+		    const id = document.getElementById('userId').value;
+		    const name = document.getElementById('name').value;
+		    const email = document.getElementById('email').value;
+
+		    try {
+		    	await axios.put('/api/users/update', {
+			    		id: id,
+			    		name: name,
+						email: email,
+		    		}, 
+		    		{
+						headers: {
+							Authorization: `Bearer ${token}`
+						}
+					}
+				);
+
+		      alert('User updated successfully');
+
+		      const modal = bootstrap.Modal.getInstance(document.getElementById('updateUserModal'));
+		      modal.hide();
+
+		      // Optionally reload user list
+		      window.location.href = '/profile';
+		    } catch (err) {
+		    	console.log(err);
+		      	alert('Update failed');
+		    }
+		  });
 	})();
 </script>
