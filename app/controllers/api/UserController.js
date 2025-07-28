@@ -1,5 +1,6 @@
 const response = require('../../../helpers/response');
 const { hash } = require('../../../helpers/utilities');
+const Validation = require('../../../system/Validation');
 const User = require('../../models/User');
 
 class UserController {
@@ -29,7 +30,9 @@ class UserController {
 			const user = await User.find(userId);
 
 			if (! user) {
-				return response.error(res, 'User not found');
+				return response.error(res, 'Failed', {
+					id: 'User does not found'
+				});
 			}
 
 			// password field remove
@@ -49,11 +52,26 @@ class UserController {
 
 	async store(req, res) {
 		try {
-			const data = req.body;
+			const { name, email, password } = req.body;
 
-			if (data.password) {
-				data.password = hash(data.password);
+			const { passes, errors } = Validation.validate(
+				{ name, email, password },
+				{
+					name: 'required|min:3',
+					email: 'required|email',
+					password: 'required|min:3'
+				}
+			);
+
+			if (! passes) {
+				return response.validationError(res, errors);
 			}
+
+			const data = {
+				name: name,
+				email: email,
+				password: hash(password),
+			};
 
 			const result = await User.create(data);
 
@@ -67,23 +85,42 @@ class UserController {
 		} catch (err) {
 			console.log(err);
 
-			return response.error(res, 'Failed to create user');
+			return response.error(res, 'Failed', {
+					message: 'User does not created '
+				});
 		}
 	}
 
 	async update(req, res) {
 		try {
-			const userId = req.body.id;
+			const { id, name, email } = req.body;
+
+			const { passes, errors } = Validation.validate(
+				{ id, name, email },
+				{
+					id: 'required',
+					name: 'required|min:3',
+					email: 'required|email',
+				}
+			);
+
+			if (! passes) {
+				return response.validationError(res, errors);
+			}
+
+			const userId = id;
 
 			const data = {
-				name: req.body.name,
-				email: req.body.email,
+				name: name,
+				email: email,
 			}
 
 			const user = await User.find(userId);
 
 			if (! user) {
-				return response.error(res, 'User not found');
+				return response.error(res, 'Failed', {
+					id: 'User does not found'
+				});
 			}
 
 			const result = await User.update(userId, data);
@@ -98,7 +135,9 @@ class UserController {
 		} catch (err) {
 			console.log(err);
 
-			return response.error(res, 'Failed to update user');
+			return response.error(res, 'Failed', {
+					message: 'User does not updated '
+				});
 		}
 	}
 
@@ -109,7 +148,9 @@ class UserController {
 			const user = await User.find(userId);
 
 			if (! user) {
-				return response.error(res, 'User not found');
+				return response.error(res, 'Failed', {
+					id: 'User does not found'
+				});
 			}
 
 			// Delete user & user token
@@ -123,7 +164,9 @@ class UserController {
 		} catch (err) {
 			console.log(err);
 
-			return response.error(res, 'Failed to delete user');
+			return response.error(res, 'Failed', {
+					message: 'User does not deleted '
+				});
 		}
 	}
 }

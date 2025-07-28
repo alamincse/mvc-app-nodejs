@@ -1,4 +1,5 @@
 const { hash, createRandomString, parseCookies, toBDTime, getBearerToken, validateToken, verifyToken } = require('../../../helpers/utilities');
+const Validation = require('../../../system/Validation');
 const response = require('../../../helpers/response');
 const Token = require('../../models/Token');
 const User = require('../../models/User');
@@ -11,15 +12,27 @@ class AuthController {
 			const password = data.password;
 			const hashPassword = hash(password);
 
+			const { passes, errors } = Validation.validate(
+				{ email, password },
+				{
+					email: 'required|email',
+					password: 'required|min:3'
+				}
+			);
+
+			if (! passes) {
+				return response.validationError(res, errors);
+			}
+
 			const user = await User.andWhere({
 							email: email,
 							password: hashPassword
 						});
 
 			if (! user) {
-				dd('User not found!');
-
-				return response.error(res, 'Failed');
+				return response.error(res, 'Failed', {
+					email: 'credentials does not match our records'
+				});
 			}
 
 			const tokenId = createRandomString(40);
@@ -73,7 +86,9 @@ class AuthController {
 			const tokenData = await verifyToken(token);
 
 		  	if (! token && !validToken && !tokenData) {
-				return response.error(res, 'Invalid token');
+		  		return response.error(res, 'Failed', {
+					email: 'Invalid user token'
+				});
 			}
 
 		  	await Token.deleteByColumn('token', token);
@@ -86,7 +101,9 @@ class AuthController {
 		} catch (error) {
 		    console.error('Logout error:', error);
 
-		   return response.error(res, 'Failed');
+		  	return response.error(res, 'Failed', {
+					message: 'Something went wrong '
+				});
 		}
 	}
 }
