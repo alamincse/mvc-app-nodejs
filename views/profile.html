@@ -1,162 +1,149 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>{{ title }}</title>
-
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
-</head>
-<body>
-	<div class="container mt-5">
-		<div class="profile-container">
-			<div class="d-flex justify-content-between align-items-center mb-4">
-				<h3>Welcome <span id="userName"></span></h3>
-				<button id="logout" class="btn btn-danger">Logout</button>
-			</div>
-
-			<h5>Register User List</h5>
-		  	<table class="table table-striped" id="usersTable" style="display: none;">
-		    	<thead>
-		      		<tr>
-				        <th>#</th>
-				        <th>Name</th>
-				        <th>Email</th>
-				        <th>Join Date</th>
-				        <th>Action</th>
-		      		</tr>
-		    	</thead>
-		    	
-		    	<tbody></tbody>
-		  	</table>
+<div class="container mt-5">
+	<div class="profile-container">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h3>Welcome <span id="userName"></span></h3>
+			<button id="logout" class="btn btn-danger">Logout</button>
 		</div>
+
+		<h5>Register User List</h5>
+	  	<table class="table table-striped" id="usersTable" style="display: none;">
+	    	<thead>
+	      		<tr>
+			        <th>#</th>
+			        <th>Name</th>
+			        <th>Email</th>
+			        <th>Join Date</th>
+			        <th>Action</th>
+	      		</tr>
+	    	</thead>
+	    	
+	    	<tbody></tbody>
+	  	</table>
 	</div>
+</div>
 
-	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-	<script type="text/javascript">
-		function deleteItem(id) {
-			if (confirm('Are you sure want to delete this item ?')) {
-				try {
-					const token = localStorage.getItem('authToken');
-
-					const response = axios.post('/api/users/delete', {
-						id: id,
-					}, {
-						headers: {
-							Authorization: `Bearer ${token}`
-						}
-					});
-
-					window.location.href = '/profile';
-				} catch (err) {
-					console.error('Error fetching user:', err.response?.data || err.message);
-				}
-			}
-		}
-
-		(async () => {
-			const token = localStorage.getItem('authToken');
-			const userId = localStorage.getItem('userId');
-
-			if (! token) {
-				window.location.href = '/home';
-				return;
-			}
-
-			// get logged in user info
-			let user = {};
-
+<script type="text/javascript">
+	function deleteItem(id) {
+		if (confirm('Are you sure want to delete this item ?')) {
 			try {
-				const response = await axios.post('/api/users/show', {
-					id: userId,
+				const token = localStorage.getItem('authToken');
+
+				const response = axios.post('/api/users/delete', {
+					id: id,
 				}, {
 					headers: {
 						Authorization: `Bearer ${token}`
 					}
 				});
 
-				user = response?.data?.data;
+				window.location.href = '/profile';
 			} catch (err) {
 				console.error('Error fetching user:', err.response?.data || err.message);
 			}
+		}
+	}
 
-			document.getElementById('userName').textContent = user.name || userId;
+	(async () => {
+		const token = localStorage.getItem('authToken');
+		const userId = localStorage.getItem('userId');
 
+		if (! token) {
+			window.location.href = '/home';
+			return;
+		}
 
-			// get all users and display the table
-			try {
-				const { data } = await axios.get('/api/users', {
-	          		headers: { 
-	          			Authorization: `Bearer ${token}` 
-	          		}
-		        });
+		// get logged in user info
+		let user = {};
 
-		        const users = data?.data || [];
-
-		        const table = document.getElementById('usersTable');
-		        const tbody = table.querySelector('tbody');
-
-		        tbody.innerHTML = '';
-
-		        if (users?.length > 0) {
-		        	users.forEach((user, index) => {
-		        		const tr = document.createElement('tr');
-
-		        		tr.innerHTML = `
-			            	<td>${index + 1}</td>
-			              	<td>${user.name || '-'}</td>
-			              	<td>${user.email || '-'}</td>
-			              	<td>${
-								new Date(user.created_at).toLocaleString('en-US', {
-									timeZone: 'Asia/Dhaka',
-									dateStyle: 'medium',
-									timeStyle: 'short',
-								})
-							}</td>
-							<td>
-								<button id="btnEdit" class="btn btn-sm btn-primary">Edit</button>
-								<button id="btnDelete" class="btn btn-sm btn-danger" onclick="deleteItem(${user.id})">Delete</button>
-							</td>
-			            `;
-
-			            tbody.appendChild(tr);
-		        	});
-
-		        	table.style.display = 'table';
-		        } else {
-		        	table.style.display = 'none';
-
-		        	alert('No users found.');
-		        }
-			} catch (error) {
-		        console.error('Error:', error);
-
-		        alert('Failed to load user list.');
-		    }
-
-		    // logout
-			document.getElementById('logout').addEventListener('click', async () => {
-				try {
-					await axios.post('/api/logout', null, {
-						headers: {
-							Authorization: `Bearer ${token}`
-						}
-					});
-
-					// Clear localStorage
-					localStorage.removeItem('authToken');
-					localStorage.removeItem('userId');
-
-					// // Clear cookie
-					document.cookie = 'session_token=; Path=/; Max-Age=0';
-
-					window.location.href = '/home';
-				} catch (error) {
-					console.error('Logout failed:', error);
-					alert('Logout failed');
+		try {
+			const response = await axios.post('/api/users/show', {
+				id: userId,
+			}, {
+				headers: {
+					Authorization: `Bearer ${token}`
 				}
 			});
-		})();
-	</script>
-</body>
-</html>
+
+			user = response?.data?.data;
+		} catch (err) {
+			console.error('Error fetching user:', err.response?.data || err.message);
+		}
+
+		document.getElementById('userName').textContent = user.name || userId;
+
+
+		// get all users and display the table
+		try {
+			const { data } = await axios.get('/api/users', {
+          		headers: { 
+          			Authorization: `Bearer ${token}` 
+          		}
+	        });
+
+	        const users = data?.data || [];
+
+	        const table = document.getElementById('usersTable');
+	        const tbody = table.querySelector('tbody');
+
+	        tbody.innerHTML = '';
+
+	        if (users?.length > 0) {
+	        	users.forEach((user, index) => {
+	        		const tr = document.createElement('tr');
+
+	        		tr.innerHTML = `
+		            	<td>${index + 1}</td>
+		              	<td>${user.name || '-'}</td>
+		              	<td>${user.email || '-'}</td>
+		              	<td>${
+							new Date(user.created_at).toLocaleString('en-US', {
+								timeZone: 'Asia/Dhaka',
+								dateStyle: 'medium',
+								timeStyle: 'short',
+							})
+						}</td>
+						<td>
+							<button id="btnEdit" class="btn btn-sm btn-primary">Edit</button>
+							<button id="btnDelete" class="btn btn-sm btn-danger" onclick="deleteItem(${user.id})">Delete</button>
+						</td>
+		            `;
+
+		            tbody.appendChild(tr);
+	        	});
+
+	        	table.style.display = 'table';
+	        } else {
+	        	table.style.display = 'none';
+
+	        	alert('No users found.');
+	        }
+		} catch (error) {
+	        console.error('Error:', error);
+
+	        alert('Failed to load user list.');
+	    }
+
+	    // logout
+		document.getElementById('logout').addEventListener('click', async () => {
+			try {
+				await axios.post('/api/logout', null, {
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				});
+
+				// Clear localStorage
+				localStorage.removeItem('authToken');
+				localStorage.removeItem('userId');
+
+				// // Clear cookie
+				document.cookie = 'session_token=; Path=/; Max-Age=0';
+
+				window.location.href = '/home';
+			} catch (error) {
+				console.error('Logout failed:', error);
+				alert('Logout failed');
+			}
+		});
+	})();
+</script>

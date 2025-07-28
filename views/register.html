@@ -1,67 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>{{ title }}</title>
+<div class="container">
+	<div class="login-container">
+		<h3 class="text-center mb-4">Register</h3>
+		<form id="registerForm">
+			<div class="mb-3">
+				<label for="name" class="form-label">Name</label>
+				<input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required>
+			</div>
 
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
-</head>
-<body>
-	<div class="container">
-		<div class="login-container">
-			<h3 class="text-center mb-4">Register</h3>
-			<form id="registerForm">
-				<div class="mb-3">
-					<label for="name" class="form-label">Name</label>
-					<input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required>
-				</div>
+			<div class="mb-3">
+				<label for="email" class="form-label">Email</label>
+				<input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+			</div>
 
-				<div class="mb-3">
-					<label for="email" class="form-label">Email</label>
-					<input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
-				</div>
+			<div class="mb-3">
+				<label for="password" class="form-label">Password</label>
+				<input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+			</div>
 
-				<div class="mb-3">
-					<label for="password" class="form-label">Password</label>
-					<input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
-				</div>
-
-				<div class="d-flex justify-content-between">
-					<button type="submit" class="btn btn-primary">Register</button>
-					<a href="/home" class="btn btn-secondary">Back to Login</a>
-				</div>
-			</form>
-		</div>
+			<div class="d-flex justify-content-between">
+				<button type="submit" class="btn btn-primary">Register</button>
+				<a href="/home" class="btn btn-secondary">Back to Login</a>
+			</div>
+		</form>
 	</div>
+</div>
 
-	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+	document.getElementById('registerForm').addEventListener('submit', async function (e) {
+		e.preventDefault();
 
-	<script type="text/javascript">
-		document.getElementById('registerForm').addEventListener('submit', async function (e) {
-			e.preventDefault();
+		let name = document.getElementById('name').value;
+		let email = document.getElementById('email').value;
+		let password = document.getElementById('password').value;
 
-			let name = document.getElementById('name').value;
-			let email = document.getElementById('email').value;
-			let password = document.getElementById('password').value;
+		try {
+			let res = await axios.post('/api/users', {
+				name: name,
+				email: email,
+				password: password,
+			});
 
-			try {
-				let res = await axios.post('/api/users', {
-					name: name,
-					email: email,
-					password: password,
-				});
+			alert('Registration Success');
 
-				alert('Registration Success');
-			} catch (error) {
-				if (error.response) {
-					alert(error.response.data.message || 'Register failed');
-				} else {
-					alert(error);
-					alert('Something went wrong');
-				}
+			// Clear input fields after success
+			document.getElementById('registerForm').reset();
+		} catch (error) {
+			if (error.response) {
+				alert(error.response.data.message || 'Register failed');
+			} else {
+				alert(error);
+				alert('Something went wrong');
 			}
-		});
-	</script>
-</body>
-</html>
+		}
+	});
+</script>
