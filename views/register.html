@@ -2,19 +2,24 @@
 	<div class="login-container">
 		<h3 class="text-center mb-4">Register</h3>
 		<form id="registerForm">
+			<div id="generalError" class="error"></div>
+
 			<div class="mb-3">
 				<label for="name" class="form-label">Name</label>
-				<input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required>
+				<input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
+				<div class="error" id="nameError"></div>
 			</div>
 
 			<div class="mb-3">
 				<label for="email" class="form-label">Email</label>
-				<input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+				<input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+				<div class="error" id="emailError"></div>
 			</div>
 
 			<div class="mb-3">
 				<label for="password" class="form-label">Password</label>
-				<input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+				<input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+				<div class="error" id="passwordError"></div>
 			</div>
 
 			<div class="d-flex justify-content-between">
@@ -33,6 +38,17 @@
 		let email = document.getElementById('email').value;
 		let password = document.getElementById('password').value;
 
+		// remove/hide fields error if input value is correct!
+		document.querySelectorAll('#registerForm input').forEach(input => {
+	  		input.addEventListener('input', () => {
+		    	const errorDiv = document.getElementById(`${input.name}Error`);
+		    
+			    if (errorDiv) {
+		     		errorDiv.innerText = '';
+			    }
+		  	});
+		});
+
 		try {
 			let res = await axios.post('/api/users', {
 				name: name,
@@ -44,12 +60,31 @@
 
 			// Clear input fields after success
 			document.getElementById('registerForm').reset();
+
+			// error reset
+			document.getElementById('nameError').innerText = '';
+			document.getElementById('emailError').innerText = '';
+			document.getElementById('passwordError').innerText = '';
+			document.getElementById('generalError').innerText = '';
 		} catch (error) {
-			if (error.response) {
-				alert(error.response.data.message || 'Register failed');
-			} else {
-				alert(error);
-				alert('Something went wrong');
+			let validationErrors = error.response.data.errors;
+			let isSuccess = error.response.data.success;
+
+			if (! isSuccess) {
+				if (validationErrors.name) {
+		          document.getElementById('nameError').innerText = validationErrors.name;
+		        }
+		        if (validationErrors.email) {
+		          document.getElementById('emailError').innerText = validationErrors.email;
+		        }
+		        if (validationErrors.password) {
+		          document.getElementById('passwordError').innerText = validationErrors.password;
+		        }
+		        if (validationErrors.message) {
+		        	document.getElementById('generalError').innerText = validationErrors.message
+		        }
+	        } else {
+	        	document.getElementById('generalError').innerText = 'Something went wrong';
 			}
 		}
 	});
