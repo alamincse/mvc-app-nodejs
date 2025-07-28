@@ -59,7 +59,6 @@ class UserController {
 
 			console.log('User created');
 
-			// Return success response
 			return response.json(res, {
 				success: true,
 				message: 'User created successfully',
@@ -69,6 +68,37 @@ class UserController {
 			console.log(err);
 
 			return response.error(res, 'Failed to create user');
+		}
+	}
+
+	async update(req, res) {
+		try {
+			const userId = req.body.id;
+
+			const data = {
+				name: req.body.name,
+				email: req.body.email,
+			}
+
+			const user = await User.find(userId);
+
+			if (! user) {
+				return response.error(res, 'User not found');
+			}
+
+			const result = await User.update(userId, data);
+
+			console.log('User updated');
+
+			return response.json(res, {
+				success: true,
+				message: 'User updated successfully',
+				data: result,
+			});
+		} catch (err) {
+			console.log(err);
+
+			return response.error(res, 'Failed to update user');
 		}
 	}
 
