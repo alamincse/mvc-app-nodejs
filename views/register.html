@@ -67,20 +67,20 @@
 			document.getElementById('passwordError').innerText = '';
 			document.getElementById('generalError').innerText = '';
 		} catch (error) {
-			let validationErrors = error.response.data.errors;
-			let isSuccess = error.response.data.success;
+			let validationErrors = error.response?.data?.errors;
+			let isSuccess = error.response?.data?.success;
 
 			if (! isSuccess) {
-				if (validationErrors.name) {
+				if (validationErrors?.name) {
 		          document.getElementById('nameError').innerText = validationErrors.name;
 		        }
-		        if (validationErrors.email) {
+		        if (validationErrors?.email) {
 		          document.getElementById('emailError').innerText = validationErrors.email;
 		        }
-		        if (validationErrors.password) {
+		        if (validationErrors?.password) {
 		          document.getElementById('passwordError').innerText = validationErrors.password;
 		        }
-		        if (validationErrors.message) {
+		        if (validationErrors?.message) {
 		        	document.getElementById('generalError').innerText = validationErrors.message
 		        }
 	        } else {

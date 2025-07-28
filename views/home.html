@@ -2,14 +2,18 @@
 	<div class="login-container">
 		<h3 class="text-center mb-4">Login</h3>
 		<form id="loginForm">
+			<div id="generalError" class="error"></div>
+
 			<div class="mb-3">
 				<label for="email" class="form-label">Email</label>
-				<input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+				<input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+				<div class="error" id="emailError"></div>
 			</div>
 
 			<div class="mb-3">
 				<label for="password" class="form-label">Password</label>
-				<input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+				<input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+				<div class="error" id="passwordError"></div>
 			</div>
 
 			<button type="submit" class="btn btn-primary w-100">Login</button>
@@ -27,6 +31,17 @@
 
 		let email = document.getElementById('email').value;
 		let password = document.getElementById('password').value;
+
+		// remove/hide fields error if input value is correct!
+		document.querySelectorAll('#loginForm input').forEach(input => {
+	  		input.addEventListener('input', () => {
+		    	const errorDiv = document.getElementById(`${input.name}Error`);
+		    
+			    if (errorDiv) {
+		     		errorDiv.innerText = '';
+			    }
+		  	});
+		});
 
 		try {
 			let res = await axios.post('/api/login', {
@@ -47,10 +62,21 @@
 
 			window.location.href = '/profile';
 		} catch (error) {
-			if (error.response) {
-				alert(error.response.data.message || 'Login failed');
-			} else {
-				alert('Something went wrong');
+			let validationErrors = error.response?.data?.errors;
+			let isSuccess = error.response?.data?.success;
+
+			if (! isSuccess) {
+				if (validationErrors?.email) {
+		          document.getElementById('emailError').innerText = validationErrors.email;
+		        }
+		        if (validationErrors?.password) {
+		          document.getElementById('passwordError').innerText = validationErrors.password;
+		        }
+		        if (validationErrors?.message) {
+		        	document.getElementById('generalError').innerText = validationErrors.message
+		        }
+	        } else {
+	        	document.getElementById('generalError').innerText = 'Something went wrong';
 			}
 		}
 	});
