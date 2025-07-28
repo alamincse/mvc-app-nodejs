@@ -31,13 +31,17 @@
 		        		</div>
 
 		        		<div class="modal-body">
+		        			<div id="generalError" class="error"></div>
+
 		          			<div class="mb-2">
 		            			<label for="name" class="form-label">Name</label>
-		            			<input type="text" class="form-control form-control-sm" id="name" required>
+		            			<input type="text" class="form-control form-control-sm" id="name" name="name">
+		            			<div class="error" id="nameError"></div>
 		          			</div>
 		          			<div class="mb-2">
 					            <label for="email" class="form-label">Email</label>
-					            <input type="email" class="form-control form-control-sm" id="email" required>
+					            <input type="email" class="form-control form-control-sm" id="email" name="email">
+					            <div class="error" id="emailError"></div>
 		          			</div>
 		          			
 		          			<input type="hidden" id="userId">
@@ -217,6 +221,17 @@
 		    const name = document.getElementById('name').value;
 		    const email = document.getElementById('email').value;
 
+		    // remove/hide fields error if input value is correct!
+			document.querySelectorAll('#updateUserForm input').forEach(input => {
+		  		input.addEventListener('input', () => {
+			    	const errorDiv = document.getElementById(`${input.name}Error`);
+			    
+				    if (errorDiv) {
+			     		errorDiv.innerText = '';
+				    }
+			  	});
+			});
+
 		    try {
 		    	await axios.put('/api/users/update', {
 			    		id: id,
@@ -237,11 +252,24 @@
 
 		      // Optionally reload user list
 		      window.location.href = '/profile';
-		    } catch (err) {
-		    	console.log(err);
-		    	
-		      	alert('Update failed');
+		    } catch (error) {
+		    	let validationErrors = error.response?.data?.errors;
+				let isSuccess = error.response?.data?.success;
+
+				if (! isSuccess) {
+					if (validationErrors?.name) {
+			          document.getElementById('nameError').innerText = validationErrors.name;
+			        }
+			        if (validationErrors?.email) {
+			          document.getElementById('emailError').innerText = validationErrors.email;
+			        }
+			        if (validationErrors?.message) {
+			        	document.getElementById('generalError').innerText = validationErrors.message
+			        }
+		        } else {
+		        	document.getElementById('generalError').innerText = 'Something went wrong';
+				}
 		    }
-		  });
+		});
 	})();
 </script>
