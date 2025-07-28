@@ -176,8 +176,5 @@ APP_PRODUCTION_ENV_NAME=production
 
 APP_BACKLOG=511</pre>
 
-## License
-This project is open-source and free to use for educational or personal use.
-
 ## Author
 **Al-Amin Sarker**
