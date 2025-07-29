@@ -1,5 +1,7 @@
+const db = require('../config/db.js');
+
 class Validation {
-	static validate(data, rules) {
+	static async validate(data, rules) {
 		let errors = {};
 
 		for (let field in rules) {
@@ -34,6 +36,34 @@ class Validation {
 
 					if (value && !emailRegex.test(value)) {
 						errors[field] = `${field} must be a valid email`;
+					}
+				}
+
+
+				if (rule.startsWith('unique:')) {
+					const parts = rule.split(':')[1].split(',');
+
+					const table = parts[0]; // users
+					const column = parts[1] || field; // email
+					const ignoreId = parts[2]; // ID to ignore
+
+					let sql = `SELECT id FROM ${table} WHERE ${column} = ?`;
+					let params = [value];
+
+					if (ignoreId) {
+						sql += ` AND id != ?`;
+						params.push(ignoreId);
+					}
+
+					const result = await new Promise((resolve, reject) => {
+						db.query(sql, params, (err, rows) => {
+							if (err) return reject(err);
+							resolve(rows);
+						});
+					});
+
+					if (result.length > 0) {
+						errors[field] = `${field} already exists`;
 					}
 				}
 			}

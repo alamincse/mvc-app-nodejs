@@ -12,7 +12,7 @@ class AuthController {
 			const password = data.password;
 			const hashPassword = hash(password);
 
-			const { passes, errors } = Validation.validate(
+			const { passes, errors } = await Validation.validate(
 				{ email, password },
 				{
 					email: 'required|email',

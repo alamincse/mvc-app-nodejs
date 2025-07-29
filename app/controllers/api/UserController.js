@@ -54,14 +54,16 @@ class UserController {
 		try {
 			const { name, email, password } = req.body;
 
-			const { passes, errors } = Validation.validate(
+			const { passes, errors } = await Validation.validate(
 				{ name, email, password },
 				{
 					name: 'required|min:3',
-					email: 'required|email',
+					email: 'required|email|unique:users',
 					password: 'required|min:3'
 				}
 			);
+
+			console.log(errors)
 
 			if (! passes) {
 				return response.validationError(res, errors);
@@ -95,12 +97,12 @@ class UserController {
 		try {
 			const { id, name, email } = req.body;
 
-			const { passes, errors } = Validation.validate(
+			const { passes, errors } = await Validation.validate(
 				{ id, name, email },
 				{
 					id: 'required',
 					name: 'required|min:3',
-					email: 'required|email',
+					email: `required|email|unique:users,email,${id}`,
 				}
 			);
 
