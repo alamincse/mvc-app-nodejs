@@ -181,7 +181,7 @@ The `View.js` engine renders HTML files with `{{ title }}` and `{{ content }}` p
 	</html>
 
 ## Environment Variables
-<pre lang="bash">
+<pre lang="js">
 DB_CONNECTION=mysql
 DB_HOST=localhost
 DB_USERNAME=root
