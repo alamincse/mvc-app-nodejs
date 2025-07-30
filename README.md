@@ -82,20 +82,20 @@ cd crud-app-mvc-nodejs
 npm install
 </pre>
 
-## Install Packages
+## Required Packages Install
 <pre lang="bash">
 npm install mysql
 npm install dotenv
 npm install formidable (Support `multipart/form-data` or `form-data` in postman)
 npm install nodemon --save-dev</pre>
 
-
-## Database Migration
-Run the following command to create tables: Make sure `.env` is properly configured with your `MySQL` credentials.
-- `nodemon database`
-
 ## Start the server
 - `node server` or `nodemon server`
+
+
+## Run Database Migration
+Run the following command to create tables: Make sure `.env` is properly configured with your `MySQL` credentials.
+- `nodemon database`
 
 ## Routing
 #### Define your routes in `routes/web.js` or `routes/api.js`:
@@ -165,10 +165,10 @@ class User extends Model {
 
 module.exports = new User();</pre>
 - `users` → Name of the database table
-- `['name', 'email', 'password']` → Array of fields that are allowed for mass assignment
+- `['name', 'email', 'password']` → Array of fields that are allowed for mass assignment(Fillable fields)
 
 
-## View System
+## View Engine
 The `View.js` engine renders HTML files with `{{ title }}` and `{{ content }}` placeholders, like a mini `Blade` or `EJS` system.
 <!-- views/layouts/main.html -->
 	<html>
@@ -180,7 +180,7 @@ The `View.js` engine renders HTML files with `{{ title }}` and `{{ content }}` p
 	  	</body>
 	</html>
 
-## Environment Variables
+## Environment Configuration
 <pre lang="js">
 DB_CONNECTION=mysql
 DB_HOST=localhost
