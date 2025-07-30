@@ -11,7 +11,7 @@ class Validation {
 			for (let rule of fieldRules) {
 				if (rule === 'required') {
 					if (!value || value.toString().trim() === '') {
-						errors[field] = `${field} field is required`;
+						errors[field] = `The ${field} field is required`;
 					}
 				}
 
@@ -19,7 +19,7 @@ class Validation {
 					const min = parseInt(rule.split(':')[1]);
 
 					if (value && value.length < min) {
-						errors[field] = `${field} must be at least ${min} characters`;
+						errors[field] = `The ${field} must be at least ${min} characters`;
 					}
 				}
 
@@ -27,7 +27,7 @@ class Validation {
 					const max = parseInt(rule.split(':')[1]);
 
 					if (value && value.length > max) {
-						errors[field] = `${field} must be less than ${max} characters`;
+						errors[field] = `The ${field} must be less than ${max} characters`;
 					}
 				}
 
@@ -35,7 +35,7 @@ class Validation {
 					const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 					if (value && !emailRegex.test(value)) {
-						errors[field] = `${field} must be a valid email`;
+						errors[field] = `The ${field} must be a valid email`;
 					}
 				}
 
@@ -63,9 +63,23 @@ class Validation {
 					});
 
 					if (result.length > 0) {
-						errors[field] = `${field} already exists`;
+						errors[field] = `This ${field} already exists`;
 					}
 				}
+
+				if (rule === 'numeric') {
+			        if (value && isNaN(value)) {
+		          		errors[field] = `The ${field} field must be a number.`;
+			        }
+		      	}
+
+		    	if (rule.startsWith('same:')) {
+			        const otherField = rule.split(':')[1];
+
+			        if (value !== data[otherField]) {
+			        	errors[field] = `The ${field} must match the ${otherField}.`;
+			        }
+		      	}
 			}
 		}
 
