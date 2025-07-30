@@ -63,7 +63,7 @@ class Validation {
 					});
 
 					if (result.length > 0) {
-						errors[field] = `This ${field} already exists`;
+						errors[field] = `This ${field} is already taken`;
 					}
 				}
 

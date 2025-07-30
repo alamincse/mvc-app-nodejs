@@ -58,12 +58,10 @@ class UserController {
 				{ name, email, password },
 				{
 					name: 'required|min:3',
-					email: 'required|email|unique:users',
+					email: 'required|email|unique:users,email',
 					password: 'required|min:3'
 				}
 			);
-
-			console.log(errors)
 
 			if (! passes) {
 				return response.validationError(res, errors);
