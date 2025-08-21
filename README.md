@@ -119,7 +119,7 @@ node database
 ```
 
 ## Routing
-#### Define your application routes within the `routes/web.js` or `routes/api.js` files, depending on whether the route is intended for `web` or `API` usage.
+#### Define your application routes within the `routes/web.js` or `routes/api.js`, depending on whether the route is intended for `web` or `API` usage.
 #### `routes/web.js`
 ```js
 const Route = require('../system/Route');
@@ -133,7 +133,7 @@ module.exports = Route;
 ```
 
 ### API Prefix
-All routes from `routes/api.js` are automatically prefixed with `/api` by the **RouteServiceProvider**.
+All routes from `routes/api.js` are automatically prefixed with `/api` via the **RouteServiceProvider**.
 
 ### Global Rate Limiting
 `IP-based rate limiting` to prevent abuse and ensure fair usage. By default, a basic throttling rule (e.g. `60 requests per minute`) is applied globally through the `RouteServiceProvider`
@@ -151,16 +151,16 @@ configureRateLimiting() {
 ```
 - ***Limit:*** Maximum number of requests allowed within the time window.
 - ***Scope:*** Applied globally to all routes unless overridden.
-- ***Behavior:*** Exceeding the limit returns a 429 Too Many Requests response.
+- ***Behavior:*** Exceeding the limit returns a `429 Too Many Requests` response.
 
 ## Route Service Provider
 A central place to register routes and apply global middleware like the **RouteLogger** and **RateLimiter**.
 
 ### Route Logger
-Logs every request (`timestamp`, `IP`, `method`, `path`)
+Logs every request with `timestamp`, `IP`, `method` and `path`
 
 ## Middleware
-Middleware are simple functions with signature `(req, res, next)`
+Middleware are simple functions with signature `(req, res, next)`. They handle cross-cutting concerns like `authentication`, `logging` or `validation`.
 ```js
 const Route = require('../system/Route');
 const AuthMiddleware = require('../app/middleware/AuthMiddleware');
