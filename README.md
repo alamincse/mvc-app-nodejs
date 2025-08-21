@@ -229,6 +229,21 @@ Validation is handled manually (without any framework) using custom helper funct
   confirm_password: 'required|same:password'
 }</pre>
 
+### Example: `UserController` Registration Validation
+<pre lang="js">
+const { passes, errors } = await Validation.validate(
+	{ name, email, password },
+	{
+		name: 'required|min:3',
+		email: 'required|email|unique:users,email',
+		password: 'required|min:3'
+	}
+);
+
+if (! passes) {
+	return response.validationError(res, errors);
+}</pre>
+
 
 ## Model Class Methods Reference
 
