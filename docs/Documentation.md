@@ -4,7 +4,7 @@
 
 ---
 
-## Table of Contents
+<!-- ## Table of Contents
 1. [Introduction](./docs/introduction.md)
 2. [Quick Start](./docs/quick-start)
 3. [Requirements](./docs/requirements)
@@ -28,10 +28,10 @@
 21. [CLI Cheatsheet](./docs/cli-cheatsheet)
 22. [FAQ](./docs/faq)
 
----
+--- -->
 
 ## Introduction
-This project brings a **Laravel-like workflow** to **raw Node.js**: a clean MVC structure, a custom router, middleware pipeline, a Route Service Provider, a simple view engine and a model layer powered by MySQL.
+This project brings a **Laravel-like workflow** to **Raw Node.js**: a clean MVC structure, a custom router, middleware pipeline, a Route Service Provider, Form validation, a simple view template engine and a model layer powered by MySQL.
 
 - No Express or external web frameworks.
 - JSON, URL‑encoded and multipart/form‑data request parsing.
@@ -49,7 +49,7 @@ cd mvc-app-nodejs
 npm install
 
 # 3) Configure env (copy & edit)
-cp .env.example .env   # if provided; otherwise edit .env directly
+cp .env.example .env 
 
 # 4) Run DB migrations
 nodemon database      # or: node database
