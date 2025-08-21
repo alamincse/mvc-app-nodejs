@@ -73,6 +73,11 @@ project/
 ├── server.js
 └── README.md</pre>
 
+## Requirements
+- Node.js 22
+- MySQL 5.7/8+
+- npm 10
+
 ## Getting Started
 <pre lang="bash">
 git clone git@github.com:alamincse/mvc-app-nodejs.git
@@ -102,7 +107,7 @@ Run the following command to create tables: Make sure `.env` is properly configu
 ## Routing
 #### Define your routes in `routes/web.js` or `routes/api.js`:
 #### `routes/web.js`
-<pre lang="js">
+```js
 const Route = require('../system/Route');
 const AuthMiddleware = require('../app/middleware/AuthMiddleware');
 const UserController = require('../app/controllers/UserController');
@@ -110,7 +115,11 @@ const UserController = require('../app/controllers/UserController');
 Route.get('/users', UserController.index);
 Route.post('/users', UserController.store);
 
-module.exports = Route;</pre>
+module.exports = Route;
+```
+
+### Rate Limiter
+Basic `IP‑based` throttling (e.g. 60 req/min). Applied globally via the `RouteServiceProvider`.
 
 ## Middleware
 <pre lang="js">
