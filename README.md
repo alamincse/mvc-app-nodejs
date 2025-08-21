@@ -158,6 +158,7 @@ A central place to register routes and apply global middleware like the **RouteL
 
 ### Route Logger
 Logs every request with `timestamp`, `IP`, `method` and `path`
+![RouteLogger](docs/images/RouteLogger.png)
 
 ## Middleware
 Middleware are simple functions with signature `(req, res, next)`. They handle cross-cutting concerns like `authentication`, `logging` or `validation`.
