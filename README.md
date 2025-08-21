@@ -300,8 +300,7 @@ const usersDesc = await User.orderBy('id', 'DESC');
 </pre>
 
 ## Documentation
-Full project documentation is available here: [Documentation.md](Documentation.md)
-[Introduction](./docs/introduction.md)
+Full project documentation is available here: [Documentation](./docs/Documentation.md)
 
 ## Author
 **Al-Amin Sarker**
