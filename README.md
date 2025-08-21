@@ -1,6 +1,8 @@
 ## `Node.js` MVC Framework (No Express)
 A lightweight **Node.js** project that follows the **MVC (Model-View-Controller)** architecture, built from scratch, without using any framework like `Express`. This project is ideal for learning the core backend architecture, routing mechanisms and `MySQL` integration in raw Node.js.
 
+## Introduction
+This project brings a **Laravel-like workflow** to **Raw Node.js**: a clean `MVC` structure, a custom router, middleware pipeline, a Route Service Provider, Form validation, a simple view template engine and a model layer powered by MySQL.
 
 ## Key Features
 - **Custom Routing System**
@@ -73,6 +75,12 @@ project/
 ├── server.js
 └── README.md</pre>
 
+## Application Lifecycle
+1. **server.js** boots the HTTP server and loads the router.
+2. **RouteServiceProvider** merges `web` and `api` routes and applies global middleware.
+3. **system/Route.js** resolves the incoming request and dispatches to the controller action.
+4. Controller calls **Model**/**View**/**helpers** as needed and returns a response.
+
 ## Requirements
 - Node.js 22
 - MySQL 5.7/8+
@@ -101,11 +109,17 @@ npm install nodemon --save-dev</pre>
 
 
 ## Run Database Migration
-Run the following command to create tables: Make sure `.env` is properly configured with your `MySQL` credentials.
-- `nodemon database`
+A simple migration runner lives under `database/`. Add migration files under `database/migrations` and register them in `database/index.js`. Run the following command to create tables: Make sure `.env` is properly configured with your `MySQL` credentials.
+
+```bash
+nodemon database
+
+# or:
+node database
+```
 
 ## Routing
-#### Define your routes in `routes/web.js` or `routes/api.js`:
+#### Define your application routes within the `routes/web.js` or `routes/api.js` files, depending on whether the route is intended for `web` or `API` usage.
 #### `routes/web.js`
 ```js
 const Route = require('../system/Route');
@@ -118,23 +132,47 @@ Route.post('/users', UserController.store);
 module.exports = Route;
 ```
 
-### Rate Limiter
-Basic `IP‑based` throttling (e.g. 60 req/min). Applied globally via the `RouteServiceProvider`.
+### API Prefix
+All routes from `routes/api.js` are automatically prefixed with `/api` by the **RouteServiceProvider**.
+
+### Global Rate Limiting
+`IP-based rate limiting` to prevent abuse and ensure fair usage. By default, a basic throttling rule (e.g. `60 requests per minute`) is applied globally through the `RouteServiceProvider`
+
+```js
+configureRateLimiting() {
+    // Allow max 60 requests per 1 minute per IP
+    const limit = 60;
+    const time = 60 * 1000; // 1 minute
+
+    const globalRateLimiter = new RateLimiter(limit, time);
+
+    return globalRateLimiter?.handle;
+}
+```
+- ***Limit:*** Maximum number of requests allowed within the time window.
+- ***Scope:*** Applied globally to all routes unless overridden.
+- ***Behavior:*** Exceeding the limit returns a 429 Too Many Requests response.
+
+## Route Service Provider
+A central place to register routes and apply global middleware like the **RouteLogger** and **RateLimiter**.
 
 ## Middleware
-<pre lang="js">
+Middleware are simple functions with signature `(req, res, next)`
+```js
 const Route = require('../system/Route');
 const AuthMiddleware = require('../app/middleware/AuthMiddleware');
 const UserController = require('../app/controllers/UserController');
 
 // add middleware(`AuthMiddleware`)
 Route.post('/users', UserController.store, [AuthMiddleware]); 
-module.exports = Route;</pre>
+module.exports = Route;
+```
 
 
 ## Controller Example
-#### `app/controllers/UserController.js`
-<pre lang="js">
+Controllers live under `app/controllers/{web|api}`.
+#### `app/controllers/api/UserController.js`
+```js
 const response = require('../../helpers/response');
 const User = require('../models/User');
 
@@ -156,12 +194,14 @@ class UserController {
   }
 }
 
-module.exports = new UserController();</pre>
+module.exports = new UserController();
+```
 
 
 ## Model Example
+Models extend the base `system/Model.js` class and define **table** and **fillable fields**.
 #### `app/models/User.js`
-<pre lang="js">
+```js
 const Model = require('../../system/Model');
 
 class User extends Model {
@@ -174,10 +214,14 @@ class User extends Model {
   }
 }
 
-module.exports = new User();</pre>
+module.exports = new User();
+```
 - `users` → Name of the database table
 - `['name', 'email', 'password']` → Array of fields that are allowed for mass assignment(Fillable fields)
 
+
+### Route Logger
+Logs every request (`timestamp`, `IP`, `method`, `path`)
 
 ## View Engine
 The `View.js` engine renders HTML files with `{{ title }}` and `{{ content }}` placeholders, like a mini `Blade` or `EJS` system.
@@ -308,8 +352,8 @@ const usersIn = await User.whereIn('id', [1, 2, 3]);
 const usersDesc = await User.orderBy('id', 'DESC');
 </pre>
 
-## Documentation
-Full project documentation is available here: [Documentation](./docs/Documentation.md)
+<!-- ## Documentation -->
+<!-- Full project documentation is available here: [Documentation](./docs/Documentation.md) -->
 
 ## Author
 **Al-Amin Sarker**
