@@ -4,10 +4,10 @@ class Middleware {
 
 		const next = async () => {
 			if (index < middlewares.length) {
-				const current = middlewares[index++];
+				const currentMiddleware = middlewares[index++];
 
 				// Call actual middleware (e.g. Auth, Role)
-				await current(req, res, next);
+				await currentMiddleware(req, res, next);
 			} else {
 				// Middleware complete → now call controller (All middleware passed)
 				// like matchedRoute.handler(req, res) in Route.js file
