@@ -13,39 +13,45 @@ class RateLimiter {
    	 * @param {function} next - Next middleware function
    	 */
 	handle(req, res, next) {
-		// Get client IP safely (proxy aware)
-		const ip = (req.headers && req.headers['x-forwarded-for']?.split(',').shift()) || // proxy IP
-					req.socket?.remoteAddress || 										 // modern Node
-					req.connection?.remoteAddress || 									// older Node
-					'unknown';														   // fallback
+		try {
+			// Get client IP safely (proxy aware)
+			const ip = (req.headers && req.headers['x-forwarded-for']?.split(',').shift()) || // proxy IP
+						req.socket?.remoteAddress || 										 // modern Node
+						req.connection?.remoteAddress || 									// older Node
+						'unknown';														   // fallback
 
-		const now = Date.now(); // current timestamp
+			const now = Date.now(); // current timestamp
 
-		// Initialize IP array if not exist
-    	if (! this.rateLimitMap[ip]) this.rateLimitMap[ip] = [];
+			// Initialize IP array if not exist
+	    	if (! this.rateLimitMap[ip]) this.rateLimitMap[ip] = [];
 
-    	// Remove old requests outside the window
-    	this.rateLimitMap[ip] = this.rateLimitMap[ip].filter(ts => now - ts < this.windowMs);
+	    	// Remove old requests outside the window
+	    	this.rateLimitMap[ip] = this.rateLimitMap[ip].filter(ts => now - ts < this.windowMs);
 
-    	// Check if limit exceeded
-    	if (this.rateLimitMap[ip].length >= this.limit) {
-      		const message = 'Too many requests. Please try again later.';
+	    	// Check if limit exceeded
+	    	if (this.rateLimitMap[ip].length >= this.limit) {
+	      		const message = 'Too many requests. Please try again later.';
 
-      		res.writeHead(429, { 
-				'Content-Type': 'application/json' 
-			});
+	      		res.writeHead(429, { 
+					'Content-Type': 'application/json' 
+				});
 
-      		res.end(JSON.stringify({ message }));
-      		
-      		// stop further processing
-      		return; 
-    	}
+	      		res.end(JSON.stringify({ message }));
+	      		
+	      		// stop further processing
+	      		return; 
+	    	}
 
-    	// Log current request timestamp
-    	this.rateLimitMap[ip].push(now);
+	    	// Log current request timestamp
+	    	this.rateLimitMap[ip].push(now);
 
-    	// Proceed to next middleware or route handler
-    	next();
+	    	// Proceed to next middleware or route handler
+	    	next();
+		} catch (err) {
+			res.writeHead(500, { 'Content-Type': 'application/json' });
+
+			res.end(JSON.stringify({ message: 'Internal Server Error' }));
+		}
 	}
 }
 
