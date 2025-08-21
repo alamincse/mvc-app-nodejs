@@ -1,4 +1,4 @@
-## `Node.js` MVC Framework (No Express)
+## MVC APP `Node.js` (No Express)
 A lightweight **Node.js** project that follows the **MVC (Model-View-Controller)** architecture, built from scratch, without using any framework like `Express`. This project is ideal for learning the core backend architecture, routing mechanisms and `MySQL` integration in raw Node.js.
 
 ## Introduction
@@ -156,6 +156,9 @@ configureRateLimiting() {
 ## Route Service Provider
 A central place to register routes and apply global middleware like the **RouteLogger** and **RateLimiter**.
 
+### Route Logger
+Logs every request (`timestamp`, `IP`, `method`, `path`)
+
 ## Middleware
 Middleware are simple functions with signature `(req, res, next)`
 ```js
@@ -219,9 +222,6 @@ module.exports = new User();
 - `users` → Name of the database table
 - `['name', 'email', 'password']` → Array of fields that are allowed for mass assignment(Fillable fields)
 
-
-### Route Logger
-Logs every request (`timestamp`, `IP`, `method`, `path`)
 
 ## View Engine
 The `View.js` engine renders HTML files with `{{ title }}` and `{{ content }}` placeholders, like a mini `Blade` or `EJS` system.
