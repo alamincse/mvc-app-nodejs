@@ -7,6 +7,7 @@ A lightweight **Node.js** project that follows the **MVC (Model-View-Controller)
 - **MVC Folder Structure**
 - **Middleware Support**
 - **Route Service Provider Support(Handles `web` and `api` routes with `/api` prefix)**
+- **Global Rate Limiter Support (limits requests per IP with customizable limits and time windows)**
 - **MySQL Integration (using `mysql` driver)**
 - **Built-in password hashing (`crypto`)**
 - **Custom View Engine (`View.js`)**
