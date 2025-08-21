@@ -4,10 +4,34 @@ const apiRoutes = require('../../routes/api');
 const RateLimiter = require('../middleware/RateLimiter');
 
 class RouteServiceProvider {
-	// check routes object is empty or not!
+	/**
+     * Check if the given routes object is empty
+     * @param {Object} routeObject - The object to check
+     * @returns {boolean} True if the object has no keys, false otherwise
+     */
 	isEmptyObject(routeObject) {
 		return routeObject && Object.keys(routeObject).length === 0 && routeObject.constructor === Object;
 	}
+
+	/**
+   	 * Apply global middlewares like RateLimiter to all routes
+	 */
+  	configureRateLimiting() {
+  		// Configure RateLimiter: allow 60 requests per 1 minute
+		const limit = 60;
+		const time = 60 * 1000; // 1 minute in milliseconds
+		
+		const globalRateLimiter = new RateLimiter(limit, time);
+
+    	[webRoutes, apiRoutes].forEach(routeGroup => {
+	      	if (routeGroup?.routes?.length) {
+	        	routeGroup.routes.forEach(route => {
+		          	// Apply global RateLimiter middleware to all routes
+		          	route.middlewares = [globalRateLimiter.handle, ...(route.middlewares || [])];
+	        	});
+	      	}
+	    });
+  	}
 
 	/**
 	 * Load all application routes (web + api) into a single route instance
@@ -16,17 +40,8 @@ class RouteServiceProvider {
 	loadRoutes() {
 		const Router = new Route();
 
-		// RateLimiter configuration: 60 requests per 1 minute
-		const limit = 60;
-		const time = 60 * 1000; // 1 minute in milliseconds
-		const globalRateLimiter = new RateLimiter(limit, time);
-
-		// Apply global RateLimiter middleware to all routes
-		[webRoutes, apiRoutes].forEach(routeGroup => {
-      		routeGroup.routes.forEach(route => {
-	        	route.middlewares = [globalRateLimiter.handle, ...(route.middlewares || [])];
-	      	});
-	    });
+		// Apply RateLimiter middleware
+    	this.configureRateLimiting();
 
 		// Merge web routes as is (no prefix)
 		if (! this.isEmptyObject(webRoutes)) {
@@ -39,7 +54,6 @@ class RouteServiceProvider {
 		}
 
 		// console.log(Router) 
-
 		// return all Routes(web + api)
 
 		// Return the combined router instance
