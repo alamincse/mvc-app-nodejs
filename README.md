@@ -8,6 +8,7 @@ A lightweight **Node.js** project that follows the **MVC (Model-View-Controller)
 - **Middleware Support**
 - **Route Service Provider Support(Handles `web` and `api` routes with `/api` prefix)**
 - **Global Rate Limiter Support (limits requests per IP with customizable limits and time windows)**
+- **Route Logger Middleware (`Date Time`, `Logs IP`, `Method` and `Path` of each request in terminal)**
 - **MySQL Integration (using `mysql` driver)**
 - **Built-in password hashing (`crypto`)**
 - **Custom View Engine (`View.js`)**
@@ -74,7 +75,7 @@ project/
 
 ## Getting Started
 <pre lang="bash">
-git clone git@github.com:alamincse/crud-app-mvc-nodejs.git
+git clone git@github.com:alamincse/mvc-app-nodejs.git
 cd crud-app-mvc-nodejs
 </pre>
 
@@ -297,6 +298,10 @@ const usersIn = await User.whereIn('id', [1, 2, 3]);
 // Get users ordered by ID descending
 const usersDesc = await User.orderBy('id', 'DESC');
 </pre>
+
+## Documentation
+Full project documentation is available here: [Documentation.md](Documentation.md)
+[Introduction](./docs/introduction.md)
 
 ## Author
 **Al-Amin Sarker**
