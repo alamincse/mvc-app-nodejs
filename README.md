@@ -240,8 +240,8 @@ The `View.js` engine renders HTML files with `{{ title }}` and `{{ content }}` p
 DB_CONNECTION=mysql
 DB_HOST=localhost
 DB_USERNAME=root
-DB_PASSWORD=
-DB_DATABASE=node_crud
+DB_PASSWORD=secret
+DB_DATABASE=mvc_node_app
 DB_PORT=3306
 
 APP_STAGING_ENV_PORT=3000
