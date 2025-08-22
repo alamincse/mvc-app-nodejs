@@ -1,3 +1,5 @@
+const Csrf = require('../system/security/Csrf');
+
 /**
 * Globally accessible methods for this application!
 */
@@ -13,4 +15,19 @@ global.dd = (data) => {
 
 	// Execution stop
 	// process.exit();
+};
+
+/**
+ * Get or generate CSRF token for a request
+ *
+ * @param {object} req - Incoming request object
+ * @param {object} res - Response object
+ * @returns {string} CSRF token
+ */
+global.getCsrfToken = (req, res) => {
+	if (!req || !res) return null;
+
+    const csrf = new Csrf(req, res);
+
+    return csrf.getToken();
 };
