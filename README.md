@@ -32,7 +32,7 @@ This project brings a **Laravel-like workflow** to **Raw Node.js**: a clean `MVC
 - **XSS Protection:** Sanitizes user input & encodes output to prevent `Cross-Site Scripting` attacks.
 - **SQL Injection Safe Queries:** Uses prepared statements or query builders to prevent `SQL Injection`.
 - **CSRF Protection:** Blocks unauthorized form submissions using `CSRF` tokens(Only `web` routes).
-- **CORS:** Allows requests only from specified origins to prevent `cross-origin` misuse.
+- **CORS:** Allows requests only from specified origins to prevent `cross-origin` misuse (Only `api` routes).
 - **Rate Limiter:** Limits requests per `IP` or user to protect against `brute-force` or `DDoS` attacks.
 - **Route Logger:** Logs each request (`IP`, `method`, `path` and `time`) for monitoring and auditing.
 
