@@ -11,6 +11,8 @@ This project brings a **Laravel-like workflow** to **Raw Node.js**: a clean `MVC
 - **Route Service Provider Support(Handles `web` and `api` routes with `/api` prefix)**
 - **Global Rate Limiter Support (limits requests per IP with customizable limits and time windows)**
 - **Route Logger Middleware (`Date Time`, `Logs IP`, `Method` and `Path` of each request in terminal)**
+- **Session Management (in-memory sessions for persisting user data like `CSRF` token.)**
+- **`CSRF` Protection (middleware that secures `POST`, `PUT`, `DELETE` requests using a session-based `CSRF` token with global helper method `getCsrfToken(req, res)`)**
 - **MySQL Integration (using `mysql` driver)**
 - **Built-in password hashing (`crypto`)**
 - **Custom View Engine (`View.js`)**
@@ -159,6 +161,96 @@ A central place to register routes and apply global middleware like the **RouteL
 ### Route Logger
 Logs every request with `timestamp`, `IP`, `method` and `path`
 ![RouteLogger](docs/images/RouteLogger.png)
+
+### CSRF Middleware Protection
+#### Overview
+`CSRF` (Cross-Site Request Forgery) middleware provides protection for state-changing HTTP requests (`POST`, `PUT`, `DELETE`) by verifying a `CSRF` token in the request.
+
+This middleware is only applied to `web` routes, while `API` routes are excluded.
+
+- A global helper method `getCsrfToken(req, res)` is available.
+- It automatically generates (if not already created) and retrieves the `CSRF` token stored in the session.
+- You can use this token inside your `controllers` or pass it to `views` for secure form submissions.
+- On form submission, the `CSRF` Middleware checks the submitted token against the session token.
+- If the token is invalid or missing, the request is rejected with `403 Forbidden`.
+
+
+#### 1. Protecting State-Changing Requests
+`CSRF` middleware automatically checks requests with methods:
+- `POST`
+- `PUT`
+- `DELETE`
+
+It looks for the token in:
+- `req.body.csrfToken`
+- `req.query.csrfToken`
+- `req.headers['x-csrf-token']`
+
+#### 2. Response When Token is Invalid
+If a `CSRF` token is missing or invalid:
+```bash
+HTTP/1.1 403 Forbidden
+{
+    "error": "Invalid CSRF token"
+}
+```
+
+#### 3. Example Usage in Controller:
+```js
+const token = getCsrfToken(req, res);
+```
+
+```js
+class HomeController {
+	async index(req, res) {
+		try {
+  			const token = getCsrfToken(req, res);
+
+			const html = await view('home', {
+				csrfToken: token, // pass csrf token to `home` view
+			});
+
+			res.writeHead(200, { 'Content-Type': 'text/html' });
+			res.end(html);
+		} catch (err) {
+			res.writeHead(500, { 'Content-Type': 'text/plain' });
+			res.end(err.message);
+		}
+	}
+
+	async login(req, res) {
+		try {
+			// your code here...
+
+			return response.json(res, {
+				success: true,
+				message: 'Success',
+				data: 'data',
+			});
+		} catch (err) {
+			console.log(err);
+
+			return response.error(res, 'Failed');
+		}
+	}
+}
+```
+
+#### 4. Example Usage in View:
+	<form method="POST" action="/">
+		<input type="hidden" id="csrfToken" name="csrfToken" value="{{ csrfToken }}">
+		<button type="submit">Submit</button>
+	</form>
+
+#### 5. Example API Call
+```js
+let res = await axios.post('/login', {
+			email: email,
+			password: password,
+			csrfToken: csrfToken,
+		});
+```
+
 
 ## Middleware
 Middleware are simple functions with signature `(req, res, next)`. They handle cross-cutting concerns like `authentication`, `logging` or `validation`.
