@@ -3,6 +3,7 @@ const webRoutes = require('../../routes/web');
 const apiRoutes = require('../../routes/api');
 const RateLimiter = require('../middleware/RateLimiter');
 const RouteLogger = require('../middleware/RouteLogger');
+const CsrfMiddleware = require('../middleware/CsrfMiddleware');
 
 class RouteServiceProvider {
 	/**
@@ -28,30 +29,41 @@ class RouteServiceProvider {
   	}
 
   	/**
-     * Configure and return all global middlewares
-     * @returns {Array} Array of global middleware functions
+     * Get global middlewares for a specific route type
+     *
+     * @param {string} routeType - 'web' or 'api'
+     * @returns {Array} Array of middleware functions
      */
-    getGlobalMiddlewares() {
-        return [
-            RouteLogger.handle, // Log route info
+    getGlobalMiddlewares(routeType) {
+    	// apply for both web & api routes
+        const middlewares = [
+            RouteLogger, // Log route info
             this.configureRateLimiting(),  // Apply rate limiting
         ];
+
+        // Apply CSRF middleware only to web routes
+        if (routeType === 'web') {
+            middlewares.push(CsrfMiddleware.bind(CsrfMiddleware)); // Apply CSRFMiddleware <-- bind handle method
+        }
+
+        return middlewares;
     }
 
-  	/**
-     * Apply a list of global middlewares to all routes in given route groups
-     */
-    applyGlobalMiddlewares() {
-    	const middlewares = this.getGlobalMiddlewares();
+  	 /**
+      * Apply global middlewares to a route group
+      *
+      * @param {Object} routeGroup - The route group object
+      * @param {string} routeType - 'web' or 'api'
+      */
+    applyGlobalMiddlewares(routeGroup, routeType) {
+    	const middlewares = this.getGlobalMiddlewares(routeType);
 
-        [webRoutes, apiRoutes].forEach(routeGroup => {
-            if (routeGroup?.routes?.length) {
-                routeGroup.routes.forEach(route => {
-                    // Prepend global middlewares to each route's existing middlewares
-                    route.middlewares = [...middlewares, ...(route.middlewares || [])];
-                });
-            }
-        });
+        if (routeGroup?.routes?.length) {
+            routeGroup.routes.forEach(route => {
+                // Prepend global middlewares to each route's existing middlewares
+                route.middlewares = [...middlewares, ...(route.middlewares || [])];
+            });
+        }
     }
 
 
@@ -62,8 +74,9 @@ class RouteServiceProvider {
 	loadRoutes() {
 		const Router = new Route();
 
-		// Apply global middleware
-    	this.applyGlobalMiddlewares();
+    	// Apply global middlewares separately for web and api
+        this.applyGlobalMiddlewares(webRoutes, 'web');
+        this.applyGlobalMiddlewares(apiRoutes, 'api');
 
 		// Merge web routes as is (no prefix)
 		if (! this.isEmptyObject(webRoutes)) {
