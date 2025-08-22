@@ -2,7 +2,6 @@ const sanitizeHtml = require('sanitize-html');
 
 class Sanitizer {
 	static clean(input) {
-		console.log("Input ", input)
 		if (typeof input === 'string') {
       		return sanitizeHtml(input, {
         		allowedTags: [], // no HTML tags allowed
