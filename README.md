@@ -103,6 +103,7 @@ npm install
 <pre lang="bash">
 npm install mysql
 npm install dotenv
+npm install sanitize-html
 npm install formidable (Support `multipart/form-data` or `form-data` in postman)
 npm install nodemon --save-dev</pre>
 
@@ -347,6 +348,34 @@ APP_PRODUCTION_ENV_PORT=5000
 APP_PRODUCTION_ENV_NAME=production
 
 APP_BACKLOG=511</pre>
+
+### XSS Protection Middleware
+This app includes a custom **XSS Protection Middleware** built on top of [`sanitize-html`](https://www.npmjs.com/package/sanitize-html).  
+It automatically sanitizes **request body**, **query params**, and **route params** to prevent malicious `HTML/JS` injection (`XSS` attacks).
+
+##### Why this matters?
+- Prevents Cross-Site Scripting (`XSS`) attacks
+- Cleans up all user supplied input
+- Keeps the app secure by default
+
+#### Input
+```json
+{
+  "name": "<script>alert('Hacked!')</script>",
+  "about": "Hello World"
+}
+```
+
+#### Output
+```json
+{
+  "sanitized": {
+    "name": "",
+    "about": "Hello World"
+  }
+}
+```
+
 
 ## Form Validation Rules
 This document describes the input validation rules used throughout the application.
