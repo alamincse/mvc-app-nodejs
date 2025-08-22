@@ -3,6 +3,7 @@ const webRoutes = require('../../routes/web');
 const apiRoutes = require('../../routes/api');
 const RateLimiter = require('../middleware/RateLimiter');
 const RouteLogger = require('../middleware/RouteLogger');
+const XssProtection = require("../middleware/XssProtection");
 const CsrfMiddleware = require('../middleware/CsrfMiddleware');
 
 class RouteServiceProvider {
@@ -38,6 +39,7 @@ class RouteServiceProvider {
     	// apply for both web & api routes
         const middlewares = [
             RouteLogger, // Log route info
+            XssProtection, // Apply XSS Protection (Cross-Site Scripting)
             this.configureRateLimiting(),  // Apply rate limiting
         ];
 
