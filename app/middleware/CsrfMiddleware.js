@@ -14,6 +14,8 @@ class CsrfMiddleware {
 	      		if (! csrf.verifyToken(token)) {
 	            	res.writeHead(403, { "Content-Type": "application/json" });
 
+	            	console.log('Error: Invalid CSRF token');
+
 		        	return res.end(JSON.stringify({ error: "Invalid CSRF token" }));
 		      	}
 		    }
