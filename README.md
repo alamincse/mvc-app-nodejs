@@ -13,6 +13,8 @@ This project brings a **Laravel-like workflow** to **Raw Node.js**: a clean `MVC
 - **Route Logger Middleware (`Date Time`, `Logs IP`, `Method` and `Path` of each request in terminal)**
 - **Session Management (in-memory sessions for persisting user data like `CSRF` token.)**
 - **`CSRF` Protection (middleware that secures `POST`, `PUT`, `DELETE` requests using a session-based `CSRF` token with global helper method `getCsrfToken(req, res)`)**
+- **`XSS` Protection (middleware that sanitizes request `body`, `query` and `params` to remove harmful `HTML/JS` tags)**
+- **CORS Support (middleware for handling `Cross-Origin Resource Sharing` with customizable `origins`, `methods` and `headers`)**
 - **MySQL Integration (using `mysql` driver)**
 - **Built-in password hashing (`crypto`)**
 - **Custom View Engine (`View.js`)**
@@ -375,6 +377,32 @@ It automatically sanitizes **request body**, **query params**, and **route param
   }
 }
 ```
+
+
+### CORS (Cross-Origin Resource Sharing)
+`CORS` stands for `Cross-Origin Resource Sharing`. It’s a security feature implemented by browsers that blocks requests from different `origins` (`domains`, `ports` or `protocols`) unless the server explicitly allows them.
+
+#### Example:
+Frontend: `http://localhost:3000`
+
+Backend API: `http://localhost:8000`
+
+By default, the browser will block the request unless `CORS` is enabled on the backend.
+
+#### Why Do We Need CORS?
+- To allow communication between frontend and backend hosted on different origins.
+- To prevent unauthorized access to server resources.
+- To control which domains can interact with your server.
+
+#### How CORS Works
+1. Simple Request (`GET/POST` without custom headers)
+	- Browser directly sends the request.
+	- Server must include `Access-Control-Allow-Origin`.
+
+2. Preflight Request (`POST/PUT/DELETE` with custom headers)
+	- Browser first sends an `OPTIONS` request (Preflight).
+	- Server responds with allowed methods & headers.
+	- If allowed, browser sends the actual request.
 
 
 ## Form Validation Rules
