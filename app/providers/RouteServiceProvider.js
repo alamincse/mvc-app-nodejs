@@ -5,6 +5,7 @@ const RateLimiter = require('../middleware/RateLimiter');
 const RouteLogger = require('../middleware/RouteLogger');
 const XssProtection = require("../middleware/XssProtection");
 const CsrfMiddleware = require('../middleware/CsrfMiddleware');
+const CorsMiddleware = require('../middleware/CorsMiddleware');
 
 class RouteServiceProvider {
 	/**
@@ -46,6 +47,10 @@ class RouteServiceProvider {
         // Apply CSRF middleware only to web routes
         if (routeType === 'web') {
             middlewares.push(CsrfMiddleware.bind(CsrfMiddleware)); // Apply CSRFMiddleware <-- bind handle method
+        }
+
+        if (routeType === 'api') {
+        	middlewares.push(CorsMiddleware); // Apply CORS middleware only to API routes
         }
 
         return middlewares;
