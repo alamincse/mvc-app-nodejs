@@ -3,6 +3,7 @@ const webRoutes = require('../../routes/web');
 const apiRoutes = require('../../routes/api');
 const RateLimiter = require('../middleware/RateLimiter');
 const RouteLogger = require('../middleware/RouteLogger');
+const RequestLogger = require('../middleware/RequestLogger');
 const XssProtection = require("../middleware/XssProtection");
 const CsrfMiddleware = require('../middleware/CsrfMiddleware');
 const CorsMiddleware = require('../middleware/CorsMiddleware');
@@ -40,9 +41,10 @@ class RouteServiceProvider {
     getGlobalMiddlewares(routeType) {
     	// apply for both web & api routes
         const middlewares = [
-            RouteLogger, // Log route info
+            RouteLogger, // Log route info for terminal display
             XssProtection, // Apply XSS Protection (Cross-Site Scripting)
-            SecurityHeadersMiddleware, // Apply Security Headers
+            RequestLogger, // Middleware to log HTTP requests and errors to daily log files (like Laravel)
+            // SecurityHeadersMiddleware, // Apply Security Headers
             this.configureRateLimiting(),  // Apply rate limiting
         ];
 
