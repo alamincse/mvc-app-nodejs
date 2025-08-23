@@ -6,6 +6,7 @@ const RouteLogger = require('../middleware/RouteLogger');
 const XssProtection = require("../middleware/XssProtection");
 const CsrfMiddleware = require('../middleware/CsrfMiddleware');
 const CorsMiddleware = require('../middleware/CorsMiddleware');
+const SecurityHeadersMiddleware = require('../middleware/SecurityHeadersMiddleware');
 
 class RouteServiceProvider {
 	/**
@@ -41,6 +42,7 @@ class RouteServiceProvider {
         const middlewares = [
             RouteLogger, // Log route info
             XssProtection, // Apply XSS Protection (Cross-Site Scripting)
+            SecurityHeadersMiddleware, // Apply Security Headers
             this.configureRateLimiting(),  // Apply rate limiting
         ];
 
