@@ -360,11 +360,11 @@ APP_PRODUCTION_ENV_NAME=production
 
 APP_BACKLOG=511</pre>
 
-### XSS Protection Middleware
+## XSS Protection Middleware
 This app includes a custom **XSS Protection Middleware** built on top of [`sanitize-html`](https://www.npmjs.com/package/sanitize-html).  
 It automatically sanitizes **request body**, **query params**, and **route params** to prevent malicious `HTML/JS` injection (`XSS` attacks).
 
-##### Why this matters?
+#### Why this matters?
 - Prevents Cross-Site Scripting (`XSS`) attacks
 - Cleans up all user supplied input
 - Keeps the app secure by default
@@ -388,7 +388,7 @@ It automatically sanitizes **request body**, **query params**, and **route param
 ```
 
 
-### CORS (Cross-Origin Resource Sharing)
+## CORS (Cross-Origin Resource Sharing)
 `CORS` stands for `Cross-Origin Resource Sharing`. It’s a security feature implemented by browsers that blocks requests from different `origins` (`domains`, `ports` or `protocols`) unless the server explicitly allows them.
 
 #### Example:
@@ -424,7 +424,7 @@ Security Headers are HTTP response headers that instruct the browser to enforce 
   - `Referrer-Policy: no-referrer-when-downgrade`
   - `Content-Security-Policy: default-src 'self'` -->
 
-### Request Logger (File Logging)
+## Request Logger (File Logging)
 The `RequestLogger` middleware records every incoming HTTP request and can also be extended to log errors into `daily` log files inside a `logs/` folder.
 
 #### Each log entry contains:
