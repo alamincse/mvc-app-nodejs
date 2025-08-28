@@ -14,7 +14,8 @@ This project brings a **Laravel-like workflow** to **Raw Node.js**: a clean `MVC
 - **Session Management (in-memory sessions for persisting user data like `CSRF` token.)**
 - **`CSRF` Protection (middleware that secures `POST`, `PUT`, `DELETE` requests using a session-based `CSRF` token with global helper method `getCsrfToken(req, res)`)**
 - **`XSS` Protection (middleware that sanitizes request `body`, `query` and `params` to remove harmful `HTML/JS` tags)**
-- **CORS Support (middleware for handling `Cross-Origin Resource Sharing` with customizable `origins`, `methods` and `headers`)**
+- **`CORS` Support (middleware for handling `Cross-Origin Resource Sharing` with customizable `origins`, `methods` and `headers`)**
+- **Security Headers (middleware that sets HTTP headers to protect against `XSS`, `Clickjacking`, `MIME sniffing` and insecure connections, e.g., `X-Content-Type-Options`, `X-Frame-Options`, `X-XSS-Protection`, `Strict-Transport-Security`, `Content-Security-Policy`)**
 - **MySQL Integration (using `mysql` driver)**
 - **Built-in password hashing (`crypto`)**
 - **Custom View Engine (`View.js`)**
@@ -35,6 +36,7 @@ This project brings a **Laravel-like workflow** to **Raw Node.js**: a clean `MVC
 - **CORS:** Allows requests only from specified origins to prevent `cross-origin` misuse (Only `api` routes).
 - **Rate Limiter:** Limits requests per `IP` or user to protect against `brute-force` or `DDoS` attacks.
 - **Route Logger:** Logs each request (`IP`, `method`, `path` and `time`) for monitoring and auditing.
+<!-- - **Security Headers:** Sets HTTP headers to protect against `XSS`, `Clickjacking`, `MIME sniffing` and insecure connections. Key headers include `X-Content-Type-Options`, `X-Frame-Options`, `X-XSS-Protection`, `Strict-Transport-Security`, and `Content-Security-Policy`. -->
 
 ## Sample Features
  - User Registration & Login
@@ -410,6 +412,34 @@ By default, the browser will block the request unless `CORS` is enabled on the b
 	- Browser first sends an `OPTIONS` request (Preflight).
 	- Server responds with allowed methods & headers.
 	- If allowed, browser sends the actual request.
+
+<!-- #### Security Headers
+Security Headers are HTTP response headers that instruct the browser to enforce specific security policies. They primarily protect a web application from attacks such as `XSS` (Cross-Site Scripting), `Clickjacking`, `MIME sniffing`, `referrer leakage`, `enforces HTTPS` and other insecure connection vulnerabilities.
+
+- Key headers:
+  - `X-Content-Type-Options: nosniff`
+  - `X-Frame-Options: SAMEORIGIN`
+  - `X-XSS-Protection: 1; mode=block`
+  - `Strict-Transport-Security: max-age=31536000; includeSubDomains`
+  - `Referrer-Policy: no-referrer-when-downgrade`
+  - `Content-Security-Policy: default-src 'self'` -->
+
+### Request Logger (File Logging)
+The `RequestLogger` middleware records every incoming HTTP request and can also be extended to log errors into `daily` log files inside a `logs/` folder.
+
+#### Each log entry contains:
+- `Date Time` of the request
+- Client `IP` Address
+- HTTP Method (`GET`, `POST`, `PUT` & `DELETE` etc.)
+- Request Path
+
+#### Benefits
+- Automatic daily log files (`YYYY-MM-DD.log`)
+- Centralized `logs/` folder for easy access
+- Works in both `development` & `production`
+- Extendable to log `info`, `warnings`, `errors` or `custom events`
+
+
 
 
 ## Form Validation Rules
