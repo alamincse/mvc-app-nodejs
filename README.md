@@ -119,8 +119,12 @@ npm install formidable (Support `multipart/form-data` or `form-data` in postman)
 npm install nodemon --save-dev</pre>
 
 ## Start the server
-- `node server` or `nodemon server`
-
+```js
+1. npm run dev // Development Mode (Auto Restart on file changes)
+2. nodemon server // Directly with `nodemon` (Auto Restart on file changes)
+3. npm start // Normal Mode
+4. node server // directly with `Node.js`
+```
 
 ## Run Database Migration
 A simple migration runner lives under `database/`. Add migration files under `database/migrations` and register them in `database/index.js`. Run the following command to create tables: Make sure `.env` is properly configured with your `MySQL` credentials.
