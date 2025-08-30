@@ -84,6 +84,7 @@ project/
 │ ├── layouts/
 │ └── pages
 ├── .env
+├── ecosystem.config.js(PM2)
 ├── package.json
 ├── server.js
 └── README.md</pre>
