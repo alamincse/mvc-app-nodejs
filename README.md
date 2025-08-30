@@ -116,7 +116,8 @@ npm install mysql
 npm install dotenv
 npm install sanitize-html
 npm install formidable (Support `multipart/form-data` or `form-data` in postman)
-npm install nodemon --save-dev</pre>
+npm install nodemon --save-dev
+npm install pm2 --save-dev</pre>
 
 ## Start the server
 ```bash
