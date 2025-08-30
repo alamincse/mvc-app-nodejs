@@ -123,14 +123,14 @@ npm install pm2 --save-dev</pre>
 ## Start the server
 ```bash
 1. npm run dev 			# Development Mode (Auto Restart on file changes)
-2. npm start 			# Normal Mode
-3. node server 			# Directly with `Node.js`
-4. nodemon server 		# Directly with `nodemon` (Auto Restart on file changes)
+2. npm start 			# or Normal Mode
+3. node server 			# or Directly with `Node.js`
+4. nodemon server 		# or Directly with `nodemon` (Auto Restart on file changes)
 
-# PM2 Info
+# Run via PM2
 npm run pm2:start       # Development
-npm run pm2:prod        # Production
-npm run pm2:staging     # Staging
+npm run pm2:prod        # or Production
+npm run pm2:staging     # or Staging
 
 npm run pm2:stop        # Stop all PM2 processes
 npm run pm2:restart     # Restart all PM2 processes
