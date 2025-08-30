@@ -1,8 +1,20 @@
 {
-  "dependencies": {
-    "dotenv": "^17.2.0",
-    "formidable": "^3.5.4",
-    "mysql": "^2.18.1",
-    "sanitize-html": "^2.17.0"
-  }
+	"name": "MVC APP",
+	"version": "1.0.0",
+	"description": "A lightweight Node.js APP following MVC architecture without Express.",
+	"main": "server.js",
+	"author": "Al-Amin Sarker <cseal.amin.09@gmail.com>",
+	"scripts": {
+    	"start": "node server.js",
+    	"dev": "nodemon server.js",
+  	},
+	"dependencies": {
+		"dotenv": "^17.2.0",
+		"formidable": "^3.5.4",
+		"mysql": "^2.18.1",
+		"sanitize-html": "^2.17.0"
+	},
+	"devDependencies": {
+		"nodemon": "^3.1.10"
+	}
 }
