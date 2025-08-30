@@ -119,11 +119,21 @@ npm install formidable (Support `multipart/form-data` or `form-data` in postman)
 npm install nodemon --save-dev</pre>
 
 ## Start the server
-```js
-1. npm run dev // Development Mode (Auto Restart on file changes)
-2. nodemon server // Directly with `nodemon` (Auto Restart on file changes)
-3. npm start // Normal Mode
-4. node server // directly with `Node.js`
+```bash
+1. npm run dev 			# Development Mode (Auto Restart on file changes)
+2. npm start 			# Normal Mode
+3. node server 			# Directly with `Node.js`
+4. nodemon server 		# Directly with `nodemon` (Auto Restart on file changes)
+
+# PM2 Info
+npm run pm2:start       # Development
+npm run pm2:prod        # Production
+npm run pm2:staging     # Staging
+
+npm run pm2:stop        # Stop all PM2 processes
+npm run pm2:restart     # Restart all PM2 processes
+npm run pm2:delete      # Delete all PM2 processes
+npm run pm2:logs  		# PM2 View logs
 ```
 
 ## Run Database Migration
