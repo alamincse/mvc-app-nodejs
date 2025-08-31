@@ -502,6 +502,8 @@ Validation is handled manually (without any framework) using custom helper funct
 
 ### Example: `UserController` Registration Validation
 <pre lang="js">
+const Validation = require('../../../system/Validation');
+	
 const { passes, errors } = await Validation.validate(
 	{ name, email, password },
 	{
