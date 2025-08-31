@@ -152,8 +152,7 @@ node database
 #### Define your application routes within the `routes/web.js` or `routes/api.js`, depending on whether the route is intended for `web` or `API` usage.
 #### `routes/web.js`
 ```js
-const Route = require('../system/Route');
-const AuthMiddleware = require('../app/middleware/AuthMiddleware');
+const Route = require('../system/WebRoute');
 const UserController = require('../app/controllers/UserController');
 
 Route.get('/users', UserController.index);
@@ -283,7 +282,7 @@ let res = await axios.post('/login', {
 ## Middleware
 Middleware are simple functions with signature `(req, res, next)`. They handle cross-cutting concerns like `authentication`, `logging` or `validation`.
 ```js
-const Route = require('../system/Route');
+const Route = require('../system/WebRoute');
 const AuthMiddleware = require('../app/middleware/AuthMiddleware');
 const UserController = require('../app/controllers/UserController');
 
