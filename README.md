@@ -196,7 +196,7 @@ configureRateLimiting() {
 - ***Behavior:*** Exceeding the limit returns a `429 Too Many Requests` response.
 
 ## Route Service Provider
-A central place to register routes and apply global middleware like the **RouteLogger** and **RateLimiter**.
+A central place to register routes and apply global middleware like the **RouteLogger**, **XssProtection**, **CsrfMiddleware**, **CorsMiddleware** and **RateLimiter**.
 
 ### Route Logger
 Logs every request with `timestamp`, `IP`, `method` and `path`
