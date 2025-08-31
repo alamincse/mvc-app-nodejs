@@ -153,10 +153,23 @@ node database
 #### `routes/web.js`
 ```js
 const Route = require('../system/WebRoute');
-const UserController = require('../app/controllers/UserController');
+const UserController = require('../app/controllers/web/UserController');
 
 Route.get('/users', UserController.index);
 Route.post('/users', UserController.store);
+
+module.exports = Route;
+```
+
+#### `routes/api.js`
+```js
+const Route = require('../system/ApiRoute');
+
+const UserController = require('../app/controllers/api/UserController');
+const AuthController = require('../app/controllers/api/AuthController');
+
+Route.post('/users', UserController.store);
+Route.post('/login', AuthController.create);
 
 module.exports = Route;
 ```
@@ -284,10 +297,11 @@ Middleware are simple functions with signature `(req, res, next)`. They handle c
 ```js
 const Route = require('../system/WebRoute');
 const AuthMiddleware = require('../app/middleware/AuthMiddleware');
-const UserController = require('../app/controllers/UserController');
+const UserController = require('../app/controllers/web/UserController');
 
 // add middleware(`AuthMiddleware`)
 Route.post('/users', UserController.store, [AuthMiddleware]); 
+
 module.exports = Route;
 ```
 
