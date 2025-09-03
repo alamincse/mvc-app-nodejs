@@ -2,12 +2,12 @@
 require('module-alias/register');
 
 // Start first all global helper methods!
-require('@helpers/globalHelpers');
+require('@helpers/appHelpers');
 
 const http = require('http');
 const env = require('@config/env');
 const Route = require('@providers/RouteServiceProvider');
-const StaticFileHandler = require('@system/StaticFileHandler');
+const StaticFileHandler = require('@engine/StaticFileHandler');
 
 class AppServer {
 	constructor(port, host, backlog) {

@@ -1,4 +1,4 @@
-const Route = require('@system/WebRoute');
+const Route = require('@engine/WebRoute');
 
 const RedirectIfAuthenticated = require('@app/middleware/RedirectIfAuthenticated');
 const AuthCookieMiddleware = require('@app/middleware/AuthCookieMiddleware');

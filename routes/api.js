@@ -1,4 +1,4 @@
-const Route = require('@system/ApiRoute');
+const Route = require('@engine/ApiRoute');
 
 const UserController = require('@app/controllers/api/UserController');
 const AuthController = require('@app/controllers/api/AuthController');

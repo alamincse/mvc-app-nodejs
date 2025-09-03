@@ -39,7 +39,7 @@
 	    "@helpers": "helpers",
 	    "@public": "public",
 	    "@routes": "routes",
-	    "@system": "system",
+	    "@engine": "engine",
 	    "@views": "views"
 	}
 }
