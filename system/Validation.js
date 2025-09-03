@@ -44,7 +44,7 @@ class Validation {
 					const parts = rule.split(':')[1].split(',');
 
 					const table = parts[0]; // users
-					const column = parts[1] || field; // email
+					const column = parts[1] ?? field; // email
 					const ignoreId = parts[2]; // ID to ignore
 
 					let sql = `SELECT id FROM ${table} WHERE ${column} = ?`;

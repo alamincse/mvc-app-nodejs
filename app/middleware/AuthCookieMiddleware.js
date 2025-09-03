@@ -3,7 +3,7 @@ const { validateToken, verifyToken, parseCookies } =  require('../../helpers/uti
 class AuthCookieMiddleware {
 	handle = async (req, res, next) => {
 		try {
-		    const cookies = parseCookies(req.headers.cookie || '');
+		    const cookies = parseCookies(req.headers.cookie ?? '');
 
 		    const token = cookies['session_token'];
 		    const validToken = validateToken(token);
