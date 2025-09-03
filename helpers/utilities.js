@@ -1,5 +1,4 @@
 const Token = require('@app/models/Token');
-const crypto = require('crypto');
 
 // Utilities container
 const utilities = {};
@@ -12,15 +11,6 @@ utilities.parseJSON = (jsonString) => {
 
 		return {};
 	}
-}
-
-
-utilities.hash = (str) => {
-	if (typeof str === 'string' && str.length > 0) {
-		return crypto.createHmac('sha256', 'secretKey').update(str).digest('hex');
-	}
-
-	return false;
 }
 
 utilities.createRandomString = (strLength) => {

@@ -1,6 +1,5 @@
 const MailService = require('@engine/services/MailService');
 const Validation = require('@engine/Validation');
-const { hash } = require('@helpers/utilities');
 const response = require('@helpers/response');
 const User = require('@app/models/User');
 

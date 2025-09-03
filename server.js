@@ -2,7 +2,7 @@
 require('module-alias/register');
 
 // Start first all global helper methods!
-require('@helpers/appHelpers');
+require('@engine/helpers/appHelpers');
 
 const http = require('http');
 const env = require('@config/env');

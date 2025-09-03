@@ -1,9 +1,9 @@
 /**
-* Globally accessible methods for this application!
+* Globally accessible helper methods for this application!
 */
-const { toBDTime } = require('@helpers/utilities');
 const Csrf = require('@engine/security/Csrf');
 const View = require('@engine/View');
+const crypto = require('crypto');
 
 global.view = (template, data = {}) => {
 	return View.make(template, data);
@@ -29,4 +29,12 @@ global.getCsrfToken = (req, res) => {
     const csrf = new Csrf(req, res);
 
     return csrf.getToken();
+};
+
+global.hash = (str) => {
+	if (typeof str === 'string' && str.length > 0) {
+		return crypto.createHmac('sha256', 'secretKey').update(str).digest('hex');
+	}
+
+	return false;
 };

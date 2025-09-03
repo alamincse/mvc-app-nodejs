@@ -1,4 +1,4 @@
-const { hash, createRandomString, parseCookies, toBDTime, getBearerToken, validateToken, verifyToken } = require('@helpers/utilities');
+const { createRandomString, parseCookies, toBDTime, getBearerToken, validateToken, verifyToken } = require('@helpers/utilities');
 const Validation = require('@engine/Validation');
 const response = require('@helpers/response');
 const Token = require('@app/models/Token');
