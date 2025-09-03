@@ -1,3 +1,4 @@
+const MailService = require('@engine/services/MailService');
 const Validation = require('@engine/Validation');
 const { hash } = require('@helpers/utilities');
 const response = require('@helpers/response');
@@ -76,6 +77,14 @@ class UserController {
 			const result = await User.create(data);
 
 			console.log('User created');
+
+			// Send a welcome email to a newly registered user!
+			await MailService.sendMail({
+		        to: email,
+		        subject: 'New Account Registered',
+		        text: 'Hello from MVC APP Node.js!',
+		        html: `<b>Hello ${name}, Thank you for your Registration!</b>`
+		    });
 
 			return response.json(res, {
 				success: true,
