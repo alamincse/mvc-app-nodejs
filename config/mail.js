@@ -1,4 +1,4 @@
-module.exports = {
+const mail = {
 	default: process.env.MAIL_DRIVER ?? 'smtp', // default driver: smtp, sendmail, mailgun
 
 	drivers: {
@@ -24,3 +24,5 @@ module.exports = {
         driver: process.env.MAIL_QUEUE_DRIVER ?? 'default'
     }
 }
+
+module.exports = mail;
