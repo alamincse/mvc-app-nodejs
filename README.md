@@ -16,6 +16,7 @@ This project brings a **Laravel-like workflow** to **Raw Node.js**: a clean `MVC
 - **`XSS` Protection (middleware that sanitizes request `body`, `query` and `params` to remove harmful `HTML/JS` tags)**
 - **`CORS` Support (middleware for handling `Cross-Origin Resource Sharing` with customizable `origins`, `methods` and `headers`)**
 - **Security Headers (middleware that sets HTTP headers to protect against `XSS`, `Clickjacking`, `MIME sniffing` and insecure connections, e.g., `X-Content-Type-Options`, `X-Frame-Options`, `X-XSS-Protection`, `Strict-Transport-Security`, `Content-Security-Policy`)**
+- Mail Service (Environment-based: `Mailtrap` for development)
 - **MySQL Integration (using `mysql` driver)**
 - **Built-in password hashing (`crypto`)**
 - **Custom View Engine (`View.js`)**
@@ -40,11 +41,12 @@ This project brings a **Laravel-like workflow** to **Raw Node.js**: a clean `MVC
 
 ## Sample Features
  - User Registration & Login
- - Form Validation
+ - Form Validation with error handling
  - Display Error Messages
  - Edit & Delete records
- - User Logout
- - API Routes under `/api`
+ - Secure User Logout  
+ - Mail Service  
+ - RESTful API routes under `/api`
 
 ## Folder Structure
 <pre lang="bash">
@@ -60,7 +62,8 @@ project/
 ├── config/
 │ ├── cors.js
 │ ├── db.js
-│ └── env.js
+│ ├── env.js
+│ └── mail.js
 ├── database/
 │ ├── migrations/
 │ └── index.js
@@ -90,7 +93,9 @@ project/
 │ | ├── Csrf.js
 │ | ├── Logger.js
 │ | ├── Session.js
-│ | └── Sanitizer.js	
+│ | └── Sanitizer.js
+│ ├── services
+│ | ├── MailService.js	
 │ ├── Route.js
 │ ├── Model.js
 │ ├── View.js
@@ -138,7 +143,8 @@ npm install sanitize-html
 npm install formidable (Support `multipart/form-data` or `form-data` in postman)
 npm install nodemon --save-dev
 npm install pm2 --save-dev
-npm install module-alias --save</pre>
+npm install module-alias --save
+npm install nodemailer</pre>
 
 ## Start the server
 ```bash
@@ -407,7 +413,21 @@ APP_DEVELOPMENT_ENV_NAME=development
 APP_PRODUCTION_ENV_PORT=5000
 APP_PRODUCTION_ENV_NAME=production
 
-APP_BACKLOG=511</pre>
+APP_BACKLOG=511
+
+MAIL_DRIVER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525	
+MAIL_SECURE=false
+MAIL_USER=username
+MAIL_PASS=secret
+MAIL_TIMEOUT=1000
+
+MAIL_FROM_ADDRESS=noreply@example.com
+MAIL_FROM_NAME="MVC APP"
+
+MAIL_QUEUE=
+MAIL_QUEUE_DRIVER=</pre>
 
 ## XSS Protection Middleware
 This app includes a custom **XSS Protection Middleware** built on top of [`sanitize-html`](https://www.npmjs.com/package/sanitize-html).  
@@ -489,6 +509,53 @@ The `RequestLogger` middleware records every incoming HTTP request and can also 
 - Extendable to log `info`, `warnings`, `errors` or `custom events`
 
 
+## Mail Service
+A simple extensible mail service for MVC Node.js applications. Supports environment-based configuration (e.g., `Mailtrap` for development) via `config/mail`
+
+#### Features
+- SMTP driver using `nodemailer`
+- Configurable `from` address and name
+- Supports both `text` and `html` emails
+- Reusable service with `async/await` support
+- Environment-based driver switching (e.g. `dev`, `prod`)
+
+#### Environment Variables (`.env`)
+<pre lang="js">
+# Mail driver
+MAIL_DRIVER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525	
+MAIL_SECURE=false
+MAIL_USER=debd4741aadd74
+MAIL_PASS=6db12cc708bac4
+MAIL_TIMEOUT=1000
+
+# Default sender info
+MAIL_FROM_ADDRESS=noreply@example.com
+MAIL_FROM_NAME="MVC APP"
+</pre>
+
+**Note:** In `production`, replace Mailtrap credentials with `Mailgun` (or any other `SMTP`) credentials.
+
+#### Usage Example (Controller):
+```js
+const MailService = require('@engine/services/MailService');
+
+// Send a welcome email to a newly registered user!
+(async () => {
+    try {
+        await MailService.sendMail({
+            to: 'user@example.com',
+            subject: 'Welcome to MVC APP',
+            text: 'Hello! Thank you for registering.',
+            html: '<b>Hello User,</b> Thank you for your registration!'
+        });
+        console.log('Mail sent successfully!');
+    } catch (err) {
+        console.error('Mail sending failed:', err);
+    }
+})();
+```
 
 
 ## Form Validation Rules
