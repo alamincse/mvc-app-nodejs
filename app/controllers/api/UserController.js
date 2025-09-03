@@ -1,7 +1,7 @@
 const Validation = require('@engine/Validation');
 const { hash } = require('@helpers/utilities');
 const response = require('@helpers/response');
-const User = require('@models/User');
+const User = require('@app/models/User');
 
 class UserController {
 	async index(req, res) {

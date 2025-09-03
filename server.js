@@ -6,7 +6,7 @@ require('@helpers/appHelpers');
 
 const http = require('http');
 const env = require('@config/env');
-const Route = require('@providers/RouteServiceProvider');
+const Route = require('@app/providers/RouteServiceProvider');
 const StaticFileHandler = require('@engine/StaticFileHandler');
 
 class AppServer {

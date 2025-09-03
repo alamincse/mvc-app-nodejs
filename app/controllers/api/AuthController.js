@@ -1,8 +1,8 @@
 const { hash, createRandomString, parseCookies, toBDTime, getBearerToken, validateToken, verifyToken } = require('@helpers/utilities');
 const Validation = require('@engine/Validation');
 const response = require('@helpers/response');
-const Token = require('@models/Token');
-const User = require('@models/User');
+const Token = require('@app/models/Token');
+const User = require('@app/models/User');
 
 class AuthController {
 	async create(req, res) {
