@@ -56,14 +56,16 @@ project/
 │ ├── middleware/
 │ └── models/
 │ └── providers/
+|	├── RouteServiceProvider.js
 ├── config/
-│ ├── env.js
-│ └── db.js
+│ ├── cors.js
+│ ├── db.js
+│ └── env.js
 ├── database/
 │ ├── migrations/
 │ └── index.js
 ├── helpers/
-│ ├── globalHelper.js
+│ ├── appHelpers.js
 │ ├── response.js
 │ └── utilities.js
 ├── public/
@@ -75,11 +77,28 @@ project/
 ├── routes/
 │ ├── web.js
 │ └── api.js
-├── system/
+├── engine/
+│ ├── middleware (Runtime Middleware)
+| |	├── RateLimiter.js
+│ | ├── RouteLogger.js
+│ | ├── XssProtection.js
+│ | ├── RequestLogger.js
+│ | ├── CsrfMiddleware.js
+│ | ├── CorsMiddleware.js
+│ | └── SecurityHeadersMiddleware.js
+│ ├── security
+│ | ├── Csrf.js
+│ | ├── Logger.js
+│ | ├── Session.js
+│ | └── Sanitizer.js	
 │ ├── Route.js
 │ ├── Model.js
 │ ├── View.js
-│ └── Middleware.js
+│ ├── Middleware.js
+│ ├── Validation.js
+│ ├── ApiRoute.js
+│ ├── webRoute.js
+│ └── StaticFileHandler.js
 ├── views/
 │ ├── layouts/
 │ └── pages
