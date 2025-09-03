@@ -116,7 +116,7 @@ project/
 ## Application Lifecycle
 1. **server.js** boots the HTTP server and loads the router.
 2. **RouteServiceProvider** merges `web` and `api` routes and applies global middleware.
-3. **system/Route.js** resolves the incoming request and dispatches to the controller action.
+3. **engine/Route.js** resolves the incoming request and dispatches to the controller action.
 4. Controller calls **Model**/**View**/**helpers** as needed and returns a response.
 
 ## Requirements
@@ -178,8 +178,8 @@ node database
 #### Define your application routes within the `routes/web.js` or `routes/api.js`, depending on whether the route is intended for `web` or `API` usage.
 #### `routes/web.js`
 ```js
-const Route = require('../system/WebRoute');
-const UserController = require('../app/controllers/web/UserController');
+const Route = require('@engine/WebRoute');
+const UserController = require('@app/controllers/web/UserController');
 
 Route.get('/users', UserController.index);
 Route.post('/users', UserController.store);
@@ -189,10 +189,10 @@ module.exports = Route;
 
 #### `routes/api.js`
 ```js
-const Route = require('../system/ApiRoute');
+const Route = require('@engine/ApiRoute');
 
-const UserController = require('../app/controllers/api/UserController');
-const AuthController = require('../app/controllers/api/AuthController');
+const UserController = require('@app/controllers/api/UserController');
+const AuthController = require('@app/controllers/api/AuthController');
 
 Route.post('/users', UserController.store);
 Route.post('/login', AuthController.create);
@@ -321,9 +321,9 @@ let res = await axios.post('/login', {
 ## Middleware
 Middleware are simple functions with signature `(req, res, next)`. They handle cross-cutting concerns like `authentication`, `logging` or `validation`.
 ```js
-const Route = require('../system/WebRoute');
-const AuthMiddleware = require('../app/middleware/AuthMiddleware');
-const UserController = require('../app/controllers/web/UserController');
+const Route = require('@engine/WebRoute');
+const AuthMiddleware = require('@app/middleware/AuthMiddleware');
+const UserController = require('@app/controllers/web/UserController');
 
 // add middleware(`AuthMiddleware`)
 Route.post('/users', UserController.store, [AuthMiddleware]); 
@@ -336,8 +336,8 @@ module.exports = Route;
 Controllers live under `app/controllers/{web|api}`.
 #### `app/controllers/api/UserController.js`
 ```js
-const response = require('../../helpers/response');
-const User = require('../models/User');
+const response = require('@helpers/response');
+const User = require('@app/models/User');
 
 class UserController {
   async index(req, res) {
@@ -362,10 +362,10 @@ module.exports = new UserController();
 
 
 ## Model Example
-Models extend the base `system/Model.js` class and define **table** and **fillable fields**.
+Models extend the base `engine/Model.js` class and define **table** and **fillable fields**.
 #### `app/models/User.js`
 ```js
-const Model = require('../../system/Model');
+const Model = require('@engine/Model');
 
 class User extends Model {
   constructor() {
@@ -526,8 +526,8 @@ MAIL_DRIVER=smtp
 MAIL_HOST=sandbox.smtp.mailtrap.io
 MAIL_PORT=2525	
 MAIL_SECURE=false
-MAIL_USER=debd4741aadd74
-MAIL_PASS=6db12cc708bac4
+MAIL_USER=username
+MAIL_PASS=secret
 MAIL_TIMEOUT=1000
 
 # Default sender info
@@ -589,7 +589,7 @@ Validation is handled manually (without any framework) using custom helper funct
 
 ### Example: `UserController` Registration Validation
 <pre lang="js">
-const Validation = require('../../../system/Validation');
+const Validation = require('@engine/Validation');
 	
 const { passes, errors } = await Validation.validate(
 	{ name, email, password },
