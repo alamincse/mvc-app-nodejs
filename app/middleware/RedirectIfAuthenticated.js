@@ -1,4 +1,4 @@
-const { validateToken, verifyToken, parseCookies } =  require('../../helpers/utilities');
+const { validateToken, verifyToken, parseCookies } =  require('@helpers/utilities');
 
 class RedirectIfAuthenticated {
 	handle = async (req, res, next) => {

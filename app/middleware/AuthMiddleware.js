@@ -1,4 +1,4 @@
-const { validateToken, verifyToken } =  require('../../helpers/utilities');
+const { validateToken, verifyToken } =  require('@helpers/utilities');
 
 class AuthMiddleware {
 	handle = async (req, res, next) => {
@@ -27,7 +27,7 @@ class AuthMiddleware {
 					token: tokenData.token,
 				};
 
-				// Auth passed → go to controller
+				// Auth passed -> go to controller
 				next();
 			}
 		} catch (err) {

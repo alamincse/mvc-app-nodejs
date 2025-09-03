@@ -1,4 +1,4 @@
-const Route = require('./Route');
+const Route = require('@system/Route');
 const apiRoute = new Route();
 
 module.exports = apiRoute;

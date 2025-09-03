@@ -118,7 +118,8 @@ npm install dotenv
 npm install sanitize-html
 npm install formidable (Support `multipart/form-data` or `form-data` in postman)
 npm install nodemon --save-dev
-npm install pm2 --save-dev</pre>
+npm install pm2 --save-dev
+npm install module-alias --save</pre>
 
 ## Start the server
 ```bash

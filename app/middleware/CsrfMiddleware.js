@@ -1,4 +1,4 @@
-const Csrf = require('../../system/security/Csrf');
+const Csrf = require('@system/security/Csrf');
 
 class CsrfMiddleware {
 	handle = (req, res, next) => {

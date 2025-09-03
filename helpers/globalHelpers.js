@@ -1,10 +1,9 @@
-const Csrf = require('../system/security/Csrf');
-
 /**
 * Globally accessible methods for this application!
 */
-const { toBDTime } = require('./utilities');
-const View = require('../system/View');
+const { toBDTime } = require('@helpers/utilities');
+const Csrf = require('@system/security/Csrf');
+const View = require('@system/View');
 
 global.view = (template, data = {}) => {
 	return View.make(template, data);

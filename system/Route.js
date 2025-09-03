@@ -1,7 +1,7 @@
-const { parseJSON, normalizeFormData } = require('../helpers/utilities') ;
+const { parseJSON, normalizeFormData } = require('@helpers/utilities') ;
 const { StringDecoder } = require('string_decoder');
+const Middleware = require('@system/Middleware');
 const { IncomingForm } = require('formidable');
-const Middleware = require('./Middleware');
 const url = require('url');
 
 class Route {

@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const Session = require('./Session');
+const Session = require('@system/security/Session');
 
 /**
  * Csrf Class

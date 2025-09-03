@@ -1,4 +1,4 @@
-const db = require('../config/db.js');
+const db = require('@config/db.js');
 
 class Validation {
 	static async validate(data, rules) {

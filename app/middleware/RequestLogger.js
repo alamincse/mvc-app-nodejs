@@ -1,4 +1,4 @@
-const Log = require('../../system/security/Logger');
+const Log = require('@system/security/Logger');
 
 class RequestLogger {
 	handle = async (req, res, next) => {

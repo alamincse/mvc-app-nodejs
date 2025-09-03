@@ -1,4 +1,4 @@
-const Token = require('../app/models/Token');
+const Token = require('@app/models/Token');
 const crypto = require('crypto');
 
 // Utilities container

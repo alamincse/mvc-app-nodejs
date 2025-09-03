@@ -1,8 +1,8 @@
-const Route = require('../system/ApiRoute');
+const Route = require('@system/ApiRoute');
 
-const UserController = require('../app/controllers/api/UserController');
-const AuthController = require('../app/controllers/api/AuthController');
-const AuthMiddleware = require('../app/middleware/AuthMiddleware');
+const UserController = require('@app/controllers/api/UserController');
+const AuthController = require('@app/controllers/api/AuthController');
+const AuthMiddleware = require('@app/middleware/AuthMiddleware');
 
 Route.get('/users', UserController.index, [AuthMiddleware]);
 Route.post('/users', UserController.store);

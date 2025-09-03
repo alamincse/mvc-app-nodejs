@@ -1,4 +1,4 @@
-const cors = require('../../config/cors');
+const cors = require('@config/cors');
 
 class CorsMiddleware {
 	handle = (req, res, next) => {

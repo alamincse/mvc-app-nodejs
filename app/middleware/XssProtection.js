@@ -1,4 +1,4 @@
-const Sanitizer = require('../../system/security/Sanitizer');
+const Sanitizer = require('@system/security/Sanitizer');
 
 class XssProtection {
 	handle = (req, res, next) => {
