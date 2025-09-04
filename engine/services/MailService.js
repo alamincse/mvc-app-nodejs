@@ -38,11 +38,11 @@ class MailService {
         try {
             const info = await this.transporter.sendMail(mailOptions);
 
-            console.log('Mail sent:', info.response ?? info);
+            Log.info('Mail sent:', info.response ?? info);
             
             return info;
         } catch (err) {
-            console.error('Mail sending error:', err);
+            Log.error('Mail sending error:', err);
 
             throw err;
         }

@@ -404,6 +404,8 @@ DB_PASSWORD=secret
 DB_DATABASE=mvc_node_app
 DB_PORT=3306
 
+SECRET_KEY=
+
 APP_STAGING_ENV_PORT=3000
 APP_STAGING_ENV_NAME=staging
 
@@ -556,6 +558,165 @@ const MailService = require('@engine/services/MailService');
     }
 })();
 ```
+
+## Logger 
+A lightweight Node.js logging utility for writing logs to console and daily log files.  
+Supports **INFO**, **WARN** and **ERROR** levels.  
+
+### Features
+- Automatically creates a `logs/` directory if it doesn’t exist.
+- Creates a new log file per day (`YYYY-MM-DD.log`).
+- Handles global errors:
+  - `uncaughtException`
+  - `unhandledRejection`
+- Writes logs to both the console and file.
+
+### Available helper methods
+```js
+// Log info
+Log.info('Server started on port 3000');
+
+// Log warning
+Log.warn('Memory usage is high');
+
+// Log error
+Log.error('Database connection failed');
+```
+
+## Global Helper Methods
+Globally accessible helper methods for this application. These are attached to the `global` object to avoid repeated imports across files.
+
+### Available Helpers
+#### 1. `view(template, data = {})`: Render a view template with data.
+```js
+const html = view("home", { title: "Welcome" });
+```
+**Parameters:**
+- `template (string)` — View template name.
+- `data (object, optional)` — Data to pass to the view.
+**Returns:** string (rendered HTML)
+
+#### 2. `dd(data, exit = false)`: Debug helper - prints data and optionally stops execution.
+```js
+dd(user); // Just print
+dd(request, true); // Print and stop execution
+```
+**Parameters:**
+- `data (any)` — Data to print.
+- `exit (boolean, default: false)` — If true, execution stops.
+
+
+#### 3. `getCsrfToken(req, res)`: Get or generate a **CSRF** token for a request.
+```js
+const token = getCsrfToken(req, res);
+```
+**Parameters:**
+- `req (object)` — Incoming request.
+- `res (object)` — Response object.
+
+**Returns:** `string|null`
+
+#### 4. `hash(str)`: Hash a string using `HMAC-SHA256`.
+```js
+const hashed = hash("password");;
+```
+**Parameters:**
+- `str (string)` — String to hash.
+
+**Returns:** `string` (hashed hex) or `false` on error
+
+#### 5. `hash(str)`: Hash a string using `HMAC-SHA256`.
+```js
+const hashed = hash("password");
+```
+**Parameters:**
+- `str (string)` — String to hash.
+
+**Returns:** `string` (hashed hex) or `false` on error
+
+
+#### 6. `parseCookies(cookieHeader = "")`: Parse a raw cookie header into an object.
+```js
+const cookies = parseCookies("user=alamin; session=xyz123");
+```
+**Parameters:**
+- `cookieHeader` (string) — Raw cookie header.
+
+**Returns:** `object` (key-value map of cookies)
+
+
+#### 7. `getBearerToken(headers)`: Extract Bearer token from headers.
+```js
+const token = getBearerToken(req.headers);
+```
+**Parameters:**
+- `headers` (object) — HTTP headers
+
+**Returns:** `string|null`
+
+
+#### 8. `createRandomString(strLength = 40)`: Create a random alphanumeric string.
+```js
+const token = createRandomString(30);
+```
+**Parameters:**
+- `strLength` (number, `default: 40`)
+
+**Returns:** `string`
+
+
+#### 9. `Log`: Global logger instance.
+```js
+Log.info("Server started");
+Log.warn("High memory usage");
+Log.error("Database error");
+```
+
+#### 10. `parseJSON(jsonString)`: Safely parse a JSON string.
+```js
+const obj = parseJSON('{"user":"alamin"}');
+const invalid = parseJSON("not-json"); // {}
+```
+**Parameters:**
+- `jsonString` (string|null)
+
+**Returns:** `object` — Parsed `JSON` or `{}` on error
+
+
+#### 11. `normalizeFormData(fields)`: Normalize form data by converting single-element arrays to plain values.
+```js
+// Input
+const normalized = normalizeFormData({ name: ["Alamin"], age: ["25"], skills: ["js","php"] });
+
+// Output
+{ name: "Alamin", age: "25", skills: ["js","php"] }
+```
+**Parameters:**
+- `fields` (object) — Form fields
+
+**Returns:** `object|string` — Normalized object or empty string on error.
+
+
+
+# Global Helper Methods — Quick Reference
+
+| Method                  | Description                                               | Parameters                         | Returns         |
+|--------------------------|-----------------------------------------------------------|------------------------------------|-----------------|
+| `view(template, data)`  | Render a view template with data.                         | `template: string`, `data?: object`| `string` (HTML) |
+| `dd(data, exit)`        | Debug helper: print data and optionally stop execution.   | `data: any`, `exit?: boolean`      | `void` or Error |
+| `getCsrfToken(req, res)`| Get or generate CSRF token for a request.                 | `req: object`, `res: object`       | `string|null`   |
+| `hash(str)`             | Hash a string using HMAC-SHA256.                         | `str: string`                      | `string|false`  |
+| `validateToken(token)`  | Validate session token (must be 40 chars).                | `token: string`                    | `string|false`  |
+| `parseCookies(header)`  | Parse raw cookie header into key-value pairs.             | `cookieHeader: string`             | `object`        |
+| `getBearerToken(headers)`| Extract Bearer token from headers.                       | `headers: object`                  | `string|null`   |
+| `createRandomString(len)`| Generate a random alphanumeric string.                   | `strLength?: number (default 40)`  | `string`        |
+| `Log.info(msg)`         | Log info message to console + file.                      | `msg: string`                      | `void`          |
+| `Log.warn(msg)`         | Log warning message to console + file.                   | `msg: string`                      | `void`          |
+| `Log.error(msg)`        | Log error message to console + file.                     | `msg: string`                      | `void`          |
+| `parseJSON(jsonStr)`    | Safely parse JSON string.                                | `jsonString?: string`              | `object`        |
+| `normalizeFormData(fields)`| Normalize form data (convert single-element arrays).  | `fields: object`                   | `object|string` |
+
+---
 
 
 ## Form Validation Rules
