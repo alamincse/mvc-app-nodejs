@@ -700,7 +700,7 @@ const normalized = normalizeFormData({ name: ["Alamin"], age: ["25"], skills: ["
 
 
 
-# Global Helper Methods — Quick Reference
+<!-- # Global Helper Methods — Quick Reference
 
 | Method                  | Description                                               | Parameters                         | Returns         |
 |--------------------------|-----------------------------------------------------------|------------------------------------|-----------------|
@@ -718,7 +718,7 @@ const normalized = normalizeFormData({ name: ["Alamin"], age: ["25"], skills: ["
 | `parseJSON(jsonStr)`    | Safely parse JSON string.                                | `jsonString?: string`              | `object`        |
 | `normalizeFormData(fields)`| Normalize form data (convert single-element arrays).  | `fields: object`                   | `object|string` |
 
----
+--- -->
 
 
 ## Form Validation Rules
