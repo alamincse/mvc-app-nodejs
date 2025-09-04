@@ -6,7 +6,7 @@ const User = require('@app/models/User');
 class UserController {
 	async index(req, res) {
 		try {
-			const currentPage = req.queryStringObject.currentPage;
+			const currentPage = req.queryStringObject?.currentPage;
 
 			// const result = await User.paginate(currentPage);
 			const result = await User.all();
@@ -17,7 +17,7 @@ class UserController {
 				data: result,
 			});
 		} catch (err) {
-			console.log(err);
+			Log.error(err.stack ?? err.message);
 
 			return response.error(res, 'Failed');
 		}
@@ -44,7 +44,7 @@ class UserController {
 				data: user,
 			});
 		} catch (err) {
-			console.log(err);
+			Log.error(err.stack ?? err.message);
 
 			return response.error(res, 'Failed to create user');
 		}
@@ -91,7 +91,7 @@ class UserController {
 				data: result,
 			});
 		} catch (err) {
-			console.log(err);
+			Log.error(err.stack ?? err.message);
 
 			return response.error(res, 'Failed', {
 					message: 'User does not created '
@@ -141,7 +141,7 @@ class UserController {
 				data: result,
 			});
 		} catch (err) {
-			console.log(err);
+			Log.error(err.stack ?? err.message);
 
 			return response.error(res, 'Failed', {
 					message: 'User does not updated '
@@ -170,7 +170,7 @@ class UserController {
 				data: 'ok',
 			});
 		} catch (err) {
-			console.log(err);
+			Log.error(err.stack ?? err.message);
 
 			return response.error(res, 'Failed', {
 					message: 'User does not deleted '

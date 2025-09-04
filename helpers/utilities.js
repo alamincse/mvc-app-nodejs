@@ -13,24 +13,6 @@ utilities.parseJSON = (jsonString) => {
 	}
 }
 
-utilities.createRandomString = (strLength) => {
-	const possibleChars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-	let output = '';
-
-	for (let i = 1; i <= strLength; i++) {
-    	output += possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
-  	}
-  	
-  	return output;
-}
-
-// return token (From Bearer Token) or just null
-utilities.getBearerToken = (headers) => {
-	const authHeader = headers['authorization'] ?? '';
-
-	return authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
-}
-
 utilities.normalizeFormData = (fields) => {
 	return Object.fromEntries(
 		Object.entries(fields).map(([key, val]) => {
@@ -69,15 +51,6 @@ utilities.toBDTime = (date) => {
 		hour12: false
 	}).replace(' ', 'T')
 }
-
-utilities.parseCookies = (cookieHeader = '') => {
-    return Object.fromEntries(
-  		cookieHeader.split(';').map(c => c.trim().split('='))
-    );
-}
-
-// validation rules
-utilities.validateToken = (token) => typeof token === 'string' && token.trim().length === 40 ? token.trim() : false;
 
 utilities.validatePhone = (phone) => {
 	const pattern = /^01[3-9][0-9]{8}$/; // Bangladeshi phone number

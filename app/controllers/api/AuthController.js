@@ -1,4 +1,4 @@
-const { createRandomString, parseCookies, toBDTime, getBearerToken, validateToken, verifyToken } = require('@helpers/utilities');
+const { toBDTime, verifyToken } = require('@helpers/utilities');
 const Validation = require('@engine/Validation');
 const response = require('@helpers/response');
 const Token = require('@app/models/Token');
@@ -72,7 +72,7 @@ class AuthController {
 				data: token,
 			});
 		} catch (err) {
-			console.log(err);
+			Log.error(err.stack ?? err.message);
 
 			return response.error(res, 'Failed');
 		}
@@ -99,7 +99,7 @@ class AuthController {
 				data: 'ok',
 			});
 		} catch (error) {
-		    console.error('Logout error:', error);
+		    Log.error(err.stack ?? err.message);
 
 		  	return response.error(res, 'Failed', {
 					message: 'Something went wrong '

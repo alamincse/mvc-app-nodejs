@@ -12,6 +12,8 @@ class HomeController {
 			res.writeHead(200, { 'Content-Type': 'text/html' });
 			res.end(html);
 		} catch (err) {
+			Log.error(err.stack ?? err.message);
+
 			res.writeHead(500, { 'Content-Type': 'text/plain' });
 			res.end(err);
 		}
@@ -28,6 +30,8 @@ class HomeController {
 			res.writeHead(200, { 'Content-Type': 'text/html' });
 			res.end(html);
 		} catch (err) {
+			Log.error(err.stack ?? err.message);
+
 			res.writeHead(500, { 'Content-Type': 'text/plain' });
 			res.end(err);
 		}
@@ -44,6 +48,8 @@ class HomeController {
 			res.writeHead(200, { 'Content-Type': 'text/html' });
 			res.end(html);
 		} catch (err) {
+			Log.error(err.stack ?? err.message);
+			
 			res.writeHead(500, { 'Content-Type': 'text/plain' });
 			res.end(err);
 		}
