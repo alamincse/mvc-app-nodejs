@@ -3,29 +3,6 @@ const Token = require('@app/models/Token');
 // Utilities container
 const utilities = {};
 
-utilities.parseJSON = (jsonString) => {
-	try {
-		return JSON.parse(jsonString ?? '{}');
-	} catch(error) {
-		console.log('JSON parse error:', error.message);
-
-		return {};
-	}
-}
-
-utilities.normalizeFormData = (fields) => {
-	return Object.fromEntries(
-		Object.entries(fields).map(([key, val]) => {
-			if (Array.isArray(val) && val.length === 1) {
-				return [key, val[0]];
-			}
-			
-			return [key, val];
-		})
-	);
-}
-
-
 // verify user token
 utilities.verifyToken = async (bearerToken) => {
 	const token = await Token.where('token', bearerToken);
