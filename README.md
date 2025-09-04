@@ -130,6 +130,8 @@ git clone git@github.com:alamincse/mvc-app-nodejs.git
 cd crud-app-mvc-nodejs
 </pre>
 
+#### Rename the `.env.example` file to `.env`:
+
 ## Install Dependencies
 <pre lang="bash">
 npm install
