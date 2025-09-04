@@ -186,7 +186,8 @@
 				// // Clear cookie
 				document.cookie = 'session_token=; Path=/; Max-Age=0';
 
-				window.location.href = '/home';
+				// redirect to home ('/') location
+				window.location.href = '/';
 			} catch (error) {
 				console.error('Logout failed:', error);
 				alert('Logout failed');

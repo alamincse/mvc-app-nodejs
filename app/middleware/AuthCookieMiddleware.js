@@ -12,7 +12,7 @@ class AuthCookieMiddleware {
 			if (token && validToken && tokenData) {
 		     	next();
 			} else {
-		      	res.writeHead(302, { Location: '/home' });
+		      	res.writeHead(302, { Location: '/' });
 		     	res.end();
 		    }
 		} catch (err) {
