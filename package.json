@@ -18,11 +18,29 @@
 	"dependencies": {
 		"dotenv": "^17.2.0",
 		"formidable": "^3.5.4",
+		"module-alias": "^2.2.3",
 		"mysql": "^2.18.1",
+		"nodemailer": "^7.0.6",
 		"sanitize-html": "^2.17.0"
 	},
 	"devDependencies": {
 		"nodemon": "^3.1.10",
 		"pm2": "^6.0.8"
+	},
+	"_moduleAliases": {
+		"@app": "app",
+		"@controllers": "app/controllers",
+		"@controllers_web": "app/controllers/web",
+		"@controllers_api": "app/controllers/api",
+		"@middleware": "app/middleware",
+		"@models": "app/models",
+		"@providers": "app/providers",
+		"@config": "config",
+		"@database": "database",
+		"@helpers": "helpers",
+		"@public": "public",
+		"@routes": "routes",
+		"@engine": "engine",
+		"@views": "views"
 	}
 }

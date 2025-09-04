@@ -1,13 +1,13 @@
-const Route = require('../../system/Route');
-const webRoutes = require('../../routes/web');
-const apiRoutes = require('../../routes/api');
-const RateLimiter = require('../middleware/RateLimiter');
-const RouteLogger = require('../middleware/RouteLogger');
-const RequestLogger = require('../middleware/RequestLogger');
-const XssProtection = require("../middleware/XssProtection");
-const CsrfMiddleware = require('../middleware/CsrfMiddleware');
-const CorsMiddleware = require('../middleware/CorsMiddleware');
-const SecurityHeadersMiddleware = require('../middleware/SecurityHeadersMiddleware');
+const Route = require('@engine/Route');
+const webRoutes = require('@routes/web');
+const apiRoutes = require('@routes/api');
+const RateLimiter = require('@engine/middleware/RateLimiter');
+const RouteLogger = require('@engine/middleware/RouteLogger');
+const XssProtection = require("@engine/middleware/XssProtection");
+const RequestLogger = require('@engine/middleware/RequestLogger');
+const CsrfMiddleware = require('@engine/middleware/CsrfMiddleware');
+const CorsMiddleware = require('@engine/middleware/CorsMiddleware');
+const SecurityHeadersMiddleware = require('@engine/middleware/SecurityHeadersMiddleware');
 
 class RouteServiceProvider {
 	/**

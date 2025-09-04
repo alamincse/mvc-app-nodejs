@@ -1,4 +1,4 @@
-const Csrf = require('../../system/security/Csrf');
+const Csrf = require('@engine/security/Csrf');
 
 class CsrfMiddleware {
 	handle = (req, res, next) => {
@@ -22,6 +22,8 @@ class CsrfMiddleware {
 
 		    next();
 		} catch (err) {
+			Log.error(err.stack ?? err.message);
+			
 			res.writeHead(500, { 'Content-Type': 'application/json' });
 
 			res.end(JSON.stringify({ message: 'Internal Server Error' }));

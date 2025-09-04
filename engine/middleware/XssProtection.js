@@ -1,4 +1,4 @@
-const Sanitizer = require('../../system/security/Sanitizer');
+const Sanitizer = require('@engine/security/Sanitizer');
 
 class XssProtection {
 	handle = (req, res, next) => {
@@ -21,6 +21,8 @@ class XssProtection {
 			// Next middleware
 			next();
 		} catch (err) {
+			Log.error(err.stack ?? err.message);
+			
 			res.writeHead(500, { 'Content-Type': 'application/json' });
 
 			res.end(JSON.stringify({ message: 'Internal Server Error' }));

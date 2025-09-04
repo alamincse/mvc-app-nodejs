@@ -1,12 +1,12 @@
-const response = require('../../../helpers/response');
-const { hash } = require('../../../helpers/utilities');
-const Validation = require('../../../system/Validation');
-const User = require('../../models/User');
+const MailService = require('@engine/services/MailService');
+const Validation = require('@engine/Validation');
+const response = require('@helpers/response');
+const User = require('@app/models/User');
 
 class UserController {
 	async index(req, res) {
 		try {
-			const currentPage = req.queryStringObject.currentPage;
+			const currentPage = req.queryStringObject?.currentPage;
 
 			// const result = await User.paginate(currentPage);
 			const result = await User.all();
@@ -17,7 +17,7 @@ class UserController {
 				data: result,
 			});
 		} catch (err) {
-			console.log(err);
+			Log.error(err.stack ?? err.message);
 
 			return response.error(res, 'Failed');
 		}
@@ -44,7 +44,7 @@ class UserController {
 				data: user,
 			});
 		} catch (err) {
-			console.log(err);
+			Log.error(err.stack ?? err.message);
 
 			return response.error(res, 'Failed to create user');
 		}
@@ -77,13 +77,21 @@ class UserController {
 
 			console.log('User created');
 
+			// Send a welcome email to a newly registered user!
+			await MailService.sendMail({
+		        to: email,
+		        subject: 'New Account Registered',
+		        text: 'Hello from MVC APP Node.js!',
+		        html: `<b>Hello ${name}, Thank you for your Registration!</b>`
+		    });
+
 			return response.json(res, {
 				success: true,
 				message: 'User created successfully',
 				data: result,
 			});
 		} catch (err) {
-			console.log(err);
+			Log.error(err.stack ?? err.message);
 
 			return response.error(res, 'Failed', {
 					message: 'User does not created '
@@ -133,7 +141,7 @@ class UserController {
 				data: result,
 			});
 		} catch (err) {
-			console.log(err);
+			Log.error(err.stack ?? err.message);
 
 			return response.error(res, 'Failed', {
 					message: 'User does not updated '
@@ -162,7 +170,7 @@ class UserController {
 				data: 'ok',
 			});
 		} catch (err) {
-			console.log(err);
+			Log.error(err.stack ?? err.message);
 
 			return response.error(res, 'Failed', {
 					message: 'User does not deleted '

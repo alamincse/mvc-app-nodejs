@@ -17,6 +17,8 @@ class RouteLogger {
 	        
 	        if (next) next(); // call next middleware/controller
 		} catch (err) {
+			Log.error(err.stack ?? err.message);
+			
 			res.writeHead(500, { 'Content-Type': 'application/json' });
 
 			res.end(JSON.stringify({ message: 'Internal Server Error' }));
