@@ -2,12 +2,12 @@ require('dotenv').config();
 
 // Define essential environment variables
 const requiredEnvVars = [
-  'DB_CONNECTION',
-  'DB_HOST',
-  'DB_USERNAME',
-  'DB_DATABASE',
-  'DB_PORT',
-  'SECRET_KEY',
+	'DB_CONNECTION',
+  	'DB_HOST',
+  	'DB_USERNAME',
+  	'DB_DATABASE',
+  	'DB_PORT',
+  	'SECRET_KEY',
 ];
 
 // Validate each variable
