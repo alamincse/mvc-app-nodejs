@@ -16,7 +16,7 @@ This project brings a **Laravel-like workflow** to **Raw Node.js**: a clean `MVC
 - **`XSS` Protection (middleware that sanitizes request `body`, `query` and `params` to remove harmful `HTML/JS` tags)**
 - **`CORS` Support (middleware for handling `Cross-Origin Resource Sharing` with customizable `origins`, `methods` and `headers`)**
 - **Security Headers (middleware that sets HTTP headers to protect against `XSS`, `Clickjacking`, `MIME sniffing` and insecure connections, e.g., `X-Content-Type-Options`, `X-Frame-Options`, `X-XSS-Protection`, `Strict-Transport-Security`, `Content-Security-Policy`)**
-- **Namespace Support (`module-alias`) - Define custom aliases like `@app` `@app/controllers`, `@app/models`, `@app/middleware`, `@config`, `@engine` for cleaner import paths instead of long `../../../` requires.**
+- **Namespace Support (`module-alias`) - Define custom aliases like `@app`, `@config`, `@engine` for cleaner import paths instead of long `../../../` requires.**
 - **Mail Service (Environment-based: `Mailtrap` for development)**
 - **MySQL Integration (using `mysql` driver)**
 - **Built-in password hashing (`crypto`)**
@@ -433,6 +433,19 @@ MAIL_FROM_NAME="MVC APP"
 
 MAIL_QUEUE=
 MAIL_QUEUE_DRIVER=</pre>
+
+## SECRET_KEY Configuration
+The application requires a `SECRET_KEY` to ensure security for encryption, sessions and other security-related features. If `SECRET_KEY` is missing in the `.env` file, the application will throw an error.
+
+#### How to Set `SECRET_KEY`
+- Open your `.env` file (create one if it doesn't exist).
+- Locate the `SECRET_KEY` variable (already present in `.env.example`).
+- Replace its value with a secure random string (minimum `40` or `64` characters).
+
+#### Example
+```js
+SECRET_KEY=1a2b3c4d5e6f7g8h9i0jklmnopqrstuvwxyzABCDEFGHIJKL1234560
+```
 
 ## XSS Protection Middleware
 This app includes a custom **XSS Protection Middleware** built on top of [`sanitize-html`](https://www.npmjs.com/package/sanitize-html).  
