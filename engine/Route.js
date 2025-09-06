@@ -22,11 +22,18 @@ class Route {
 	 * @param {Array<Function>} [middlewares=[]] - Optional list of middleware functions
 	 */
 	register(method, path, handler, middlewares = []) {
+		if (! Array.isArray(middlewares)) {
+     		middlewares = [middlewares];
+	    }
+
+    	// auto detect route group
+    	const group = path?.startsWith('/api') ? 'api' : 'web';
+
 		this.routes.push({ 
 			method: method.toUpperCase(), 
 			path, 
 			handler,
-			middlewares,
+			middlewares: Middleware.resolve(middlewares, group),
 		});
 	}
 
