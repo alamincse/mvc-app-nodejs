@@ -16,7 +16,8 @@ This project brings a **Laravel-like workflow** to **Raw Node.js**: a clean `MVC
 - **`XSS` Protection (middleware that sanitizes request `body`, `query` and `params` to remove harmful `HTML/JS` tags)**
 - **`CORS` Support (middleware for handling `Cross-Origin Resource Sharing` with customizable `origins`, `methods` and `headers`)**
 - **Security Headers (middleware that sets HTTP headers to protect against `XSS`, `Clickjacking`, `MIME sniffing` and insecure connections, e.g., `X-Content-Type-Options`, `X-Frame-Options`, `X-XSS-Protection`, `Strict-Transport-Security`, `Content-Security-Policy`)**
-- Mail Service (Environment-based: `Mailtrap` for development)
+- **Namespace Support (`module-alias`) - Define custom aliases like `@app` `@app/controllers`, `@app/models`, `@app/middleware`, `@config`, `@engine` for cleaner import paths instead of long `../../../` requires.**
+- **Mail Service (Environment-based: `Mailtrap` for development)**
 - **MySQL Integration (using `mysql` driver)**
 - **Built-in password hashing (`crypto`)**
 - **Custom View Engine (`View.js`)**
@@ -559,6 +560,31 @@ const MailService = require('@engine/services/MailService');
         console.error('Mail sending failed:', err);
     }
 })();
+```
+
+## Namespace (Module Alias)
+This project uses `module-alias` to simplify import paths with custom `namespaces`. Instead of writing long relative paths like `../../../app/controllers/api/UserController`, you can use short aliases such as `@app/controllers/api/UserController`
+
+### Setup
+Add aliases in `package.json`
+```js
+{
+	"_moduleAliases": {
+    	"@app": "app",
+    	"@config": "config",
+		"@database": "database",
+		"@helpers": "helpers",
+		"@public": "public",
+		"@routes": "routes",
+		"@engine": "engine",
+  	}
+}
+```
+
+### Example uses
+```js
+const UserController = require('@app/controllers/api/UserController');
+const User = require('@app/models/user');
 ```
 
 ## Logger 
