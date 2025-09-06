@@ -599,6 +599,10 @@ Supports **INFO**, **WARN** and **ERROR** levels.
   - `unhandledRejection`
 - Writes logs to both the console and file.
 
+### Output
+Inside the `logs` folder, you will find log files organized `date-wise`.
+![Log](docs/images/Log.png)
+
 ### Available helper methods
 ```js
 // Log info
