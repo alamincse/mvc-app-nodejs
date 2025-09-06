@@ -322,17 +322,52 @@ let res = await axios.post('/login', {
 
 
 ## Middleware
-Middleware are simple functions with signature `(req, res, next)`. They handle cross-cutting concerns like `authentication`, `logging` or `validation`.
+This project includes a custom Middleware handling system inspired by Laravel's HTTP `Kernel`. It allows you to register middlewares for `web` and `api` routes and apply them dynamically before the request reaches the controller.
+
+#### Kernel Configuration
+All middlewares are registered inside `app/Kernel.js`
+
 ```js
-const Route = require('@engine/WebRoute');
+const RedirectIfAuthenticated = require('@app/middleware/RedirectIfAuthenticated');
+const AuthCookieMiddleware = require('@app/middleware/AuthCookieMiddleware');
 const AuthMiddleware = require('@app/middleware/AuthMiddleware');
-const UserController = require('@app/controllers/web/UserController');
 
-// add middleware(`AuthMiddleware`)
-Route.post('/users', UserController.store, [AuthMiddleware]); 
+const middlewares = {
+	'web': {
+		'guest': RedirectIfAuthenticated,
+    	'auth.cookie': AuthCookieMiddleware,
+	},
+	'api': {
+		'auth': AuthMiddleware,
+	}
+};
 
-module.exports = Route;
+module.exports = middlewares;
 ```
+
+#### Usage in Routes
+```js
+Router.get('/login', LoginController.index, ['guest']);
+Router.get('/dashboard', DashboardController.index, ['auth']);
+```
+
+#### How it works
+1. The route detects its group automatically:
+	- `/api/...`: belongs to `api` group.
+	- otherwise: `web` group
+2. `Middleware.resolve()` loads the proper middleware function(s).
+3. Before hitting the controller, `Middleware.handle()` executes all middlewares in order.
+4. If all middlewares call `next()`, the controller is executed.
+
+
+#### Step-by-Step:
+1. User requests `/dashboard`
+2. Group auto-detected: `web` group
+3. Alias `['auth']` resolved: `AuthMiddleware`
+4. Middleware pipeline runs:
+	- If authenticated: `next()` → controller executes
+	- If not authenticated: middleware returns error/redirect
+5. If all pass: `DashboardController.index` executes
 
 
 ## Controller Example
