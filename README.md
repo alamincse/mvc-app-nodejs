@@ -63,6 +63,7 @@ project/
 | |	├── RouteServiceProvider.js
 │ └── Kernel.js
 ├── config/
+│ ├── app.js
 │ ├── cors.js
 │ ├── db.js
 │ ├── env.js
