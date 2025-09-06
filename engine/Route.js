@@ -8,6 +8,7 @@
 const { StringDecoder } = require('string_decoder');
 const Middleware = require('@engine/Middleware');
 const { IncomingForm } = require('formidable');
+const config = require('@config/app');
 const url = require('url');
 
 class Route {
@@ -27,7 +28,7 @@ class Route {
 	    }
 
     	// auto detect route group
-    	const group = path?.startsWith('/api') ? 'api' : 'web';
+    	const group = path?.startsWith(config.apiPrefix) ? 'api' : 'web';
 
 		this.routes.push({ 
 			method: method.toUpperCase(), 
