@@ -9,6 +9,7 @@ This project brings a **Laravel-like workflow** to **Raw Node.js**: a clean `MVC
 - **MVC Folder Structure**
 - **Middleware Support**
 - **Route Service Provider Support(Handles `web` and `api` routes with `/api` prefix)**
+- **Includes a custom Middleware handling system inspired by Laravel's HTTP `Kernel`**
 - **Global Rate Limiter Support (limits requests per IP with customizable limits and time windows)**
 - **Route Logger Middleware (`Date Time`, `Logs IP`, `Method` and `Path` of each request in terminal)**
 - **Session Management (in-memory sessions for persisting user data like `CSRF` token.)**
@@ -348,7 +349,7 @@ module.exports = middlewares;
 #### Usage in Routes
 ```js
 Router.get('/login', LoginController.index, ['guest']);
-Router.get('/dashboard', DashboardController.index, ['auth']);
+Router.get('/dashboard', DashboardController.index, ['auth.cookie']);
 ```
 
 #### How it works
@@ -363,7 +364,7 @@ Router.get('/dashboard', DashboardController.index, ['auth']);
 #### Step-by-Step:
 1. User requests `/dashboard`
 2. Group auto-detected: `web` group
-3. Alias `['auth']` resolved: `AuthMiddleware`
+3. Alias `['auth.cookie']` resolved: `AuthCookieMiddleware`
 4. Middleware pipeline runs:
 	- If authenticated: `next()` → controller executes
 	- If not authenticated: middleware returns error/redirect
