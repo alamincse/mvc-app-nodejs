@@ -612,9 +612,6 @@ Supports **INFO**, **WARN** and **ERROR** levels.
   - `unhandledRejection`
 - Writes logs to both the console and file.
 
-### Output
-Inside the `logs` folder, you will find log files organized `date-wise`.
-![Log](docs/images/Log.png)
 
 ### Available helper methods
 ```js
@@ -627,6 +624,11 @@ Log.warn('Memory usage is high');
 // Log error
 Log.error('Database connection failed');
 ```
+
+### Output
+Inside the `logs` folder, you will find log files organized `date-wise`.
+![Log](docs/images/Log.png)
+
 
 ## Global Helper Methods
 Globally accessible helper methods for this application. These are attached to the `global` object to avoid repeated imports across files.
