@@ -32,7 +32,7 @@ class RateLimiter {
 	    	if (this.rateLimitMap[ip].length >= this.limit) {
 	      		const message = 'Too many requests. Please try again later.';
 
-	      		console.log('Error: ' +message);
+	      		Log.error('Error: ' +message);
 
 	      		res.writeHead(429, { 
 					'Content-Type': 'application/json' 

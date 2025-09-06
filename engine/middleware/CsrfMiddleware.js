@@ -12,9 +12,9 @@ class CsrfMiddleware {
 		      	const token = req.body?.csrfToken || req.query?.csrfToken || req?.headers?.['x-csrf-token'];
 
 	      		if (! csrf.verifyToken(token)) {
+	            	Log.error('Error: Invalid CSRF token');
+	            	
 	            	res.writeHead(403, { "Content-Type": "application/json" });
-
-	            	console.log('Error: Invalid CSRF token');
 
 		        	return res.end(JSON.stringify({ error: "Invalid CSRF token" }));
 		      	}
