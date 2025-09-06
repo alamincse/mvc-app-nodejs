@@ -58,9 +58,10 @@ project/
 │ │ ├── web/
 │ │ └── api/
 │ ├── middleware/
-│ └── models/
-│ └── providers/
-|	├── RouteServiceProvider.js
+│ ├── models/
+│ ├── providers/
+| |	├── RouteServiceProvider.js
+│ └── Kernel.js
 ├── config/
 │ ├── cors.js
 │ ├── db.js
@@ -109,7 +110,7 @@ project/
 ├── views/
 │ ├── layouts/
 │ └── pages
-├── .env
+├── .env.example
 ├── ecosystem.config.js(PM2)
 ├── package.json
 ├── server.js
