@@ -1,3 +1,4 @@
+require('module-alias/register');
 const env = require('@config/env');
 
 const PM2 = {
