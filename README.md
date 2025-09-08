@@ -710,14 +710,16 @@ const hashed = hash("password");;
 
 **Returns:** `string` (hashed hex) or `false` on error
 
-#### 5. `hash(str)`: Hash a string using `HMAC-SHA256`.
+#### 5. `validateToken(token)`: Hash a string using `HMAC-SHA256`.
 ```js
-const hashed = hash("password");
+const isValid = validateToken(token);
 ```
 **Parameters:**
-- `str (string)` — String to hash.
+- `token (string)` — Input token (should be `40` characters long)
 
-**Returns:** `string` (hashed hex) or `false` on error
+**Returns:** 
+- `string`: Trimmed token if valid.
+- `false`: If invalid (not a string or not exactly 40 characters)
 
 
 #### 6. `parseCookies(cookieHeader = "")`: Parse a raw cookie header into an object.
