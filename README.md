@@ -72,7 +72,6 @@ project/
 │ ├── migrations/
 │ └── index.js
 ├── helpers/
-│ ├── appHelpers.js
 │ ├── response.js
 │ └── utilities.js
 ├── public/
@@ -85,6 +84,8 @@ project/
 │ ├── web.js
 │ └── api.js
 ├── engine/
+│ ├── helpers 
+| |	├── AppHelpers.js
 │ ├── middleware (Runtime Middleware)
 | |	├── RateLimiter.js
 │ | ├── RouteLogger.js
