@@ -1,4 +1,4 @@
-const db = require('../config/db.js');
+const db = require('@config/db.js');
 
 class Model {
 	constructor(table = null, fillable = []) {
@@ -58,7 +58,7 @@ class Model {
 			db.query(sql, [id], (error, results) => {
 				if (error) return reject(error);
 
-				resolve(results[0] || null);
+				resolve(results[0] ?? null);
 			});
 		});
 	}
@@ -87,7 +87,7 @@ class Model {
 				db.query(selectSql, [id], (selectError, rows) => {
 					if (selectError) return reject(selectError);
 					
-					resolve(rows[0] || null);
+					resolve(rows[0] ?? null);
 				});
 			});
 		});
@@ -114,7 +114,7 @@ class Model {
 			db.query(sql, [value], (err, results) => {
 				if (err) return reject(err);
 
-				resolve(results[0] || null);
+				resolve(results[0] ?? null);
 			});
 		});
 	}
@@ -138,7 +138,7 @@ class Model {
 			db.query(sql, values, (error, results) => {
 				if (error) return reject(error);
 
-				resolve(results[0] || null);
+				resolve(results[0] ?? null);
 			});
 		});
 	}

@@ -1,9 +1,9 @@
-const { validateToken, verifyToken } =  require('../../helpers/utilities');
+const { verifyToken } =  require('@helpers/utilities');
 
 class AuthMiddleware {
 	handle = async (req, res, next) => {
 		try {
-			const authHeader = req.headers['authorization'];
+			const authHeader = req.headers['authorization'] ?? '';
 
 			if (! authHeader) {
 				return this.unauthorized(res, 'Authorization header missing');
@@ -27,10 +27,12 @@ class AuthMiddleware {
 					token: tokenData.token,
 				};
 
-				// Auth passed → go to controller
+				// Auth passed -> go to controller
 				next();
 			}
 		} catch (err) {
+			Log.error(err.stack ?? err.message);
+
 			res.writeHead(500, { 'Content-Type': 'application/json' });
 
 			res.end(JSON.stringify({ message: 'Internal Server Error' }));

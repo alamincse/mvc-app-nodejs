@@ -32,7 +32,7 @@ class StaticFileHandler {
 		if (! fs.existsSync(filePath)) return false;
 
 		const ext = path.extname(filePath);
-		const contentType = mimeTypes[ext] || 'application/octet-stream';
+		const contentType = mimeTypes[ext] ?? 'application/octet-stream';
 
 		const fileStream = fs.createReadStream(filePath);
 		res.writeHead(200, { 'Content-Type': contentType });

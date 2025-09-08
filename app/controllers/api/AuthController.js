@@ -1,8 +1,8 @@
-const { hash, createRandomString, parseCookies, toBDTime, getBearerToken, validateToken, verifyToken } = require('../../../helpers/utilities');
-const Validation = require('../../../system/Validation');
-const response = require('../../../helpers/response');
-const Token = require('../../models/Token');
-const User = require('../../models/User');
+const { toBDTime, verifyToken } = require('@helpers/utilities');
+const Validation = require('@engine/Validation');
+const response = require('@helpers/response');
+const Token = require('@app/models/Token');
+const User = require('@app/models/User');
 
 class AuthController {
 	async create(req, res) {
@@ -72,7 +72,7 @@ class AuthController {
 				data: token,
 			});
 		} catch (err) {
-			console.log(err);
+			Log.error(err.stack ?? err.message);
 
 			return response.error(res, 'Failed');
 		}
@@ -99,7 +99,7 @@ class AuthController {
 				data: 'ok',
 			});
 		} catch (error) {
-		    console.error('Logout error:', error);
+		    Log.error(err.stack ?? err.message);
 
 		  	return response.error(res, 'Failed', {
 					message: 'Something went wrong '

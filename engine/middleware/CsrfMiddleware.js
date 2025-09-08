@@ -1,4 +1,4 @@
-const Csrf = require('../../system/security/Csrf');
+const Csrf = require('@engine/security/Csrf');
 
 class CsrfMiddleware {
 	handle = (req, res, next) => {
@@ -12,9 +12,9 @@ class CsrfMiddleware {
 		      	const token = req.body?.csrfToken || req.query?.csrfToken || req?.headers?.['x-csrf-token'];
 
 	      		if (! csrf.verifyToken(token)) {
+	            	Log.error('Error: Invalid CSRF token');
+	            	
 	            	res.writeHead(403, { "Content-Type": "application/json" });
-
-	            	console.log('Error: Invalid CSRF token');
 
 		        	return res.end(JSON.stringify({ error: "Invalid CSRF token" }));
 		      	}
@@ -22,6 +22,8 @@ class CsrfMiddleware {
 
 		    next();
 		} catch (err) {
+			Log.error(err.stack ?? err.message);
+			
 			res.writeHead(500, { 'Content-Type': 'application/json' });
 
 			res.end(JSON.stringify({ message: 'Internal Server Error' }));

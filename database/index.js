@@ -1,5 +1,7 @@
-const createUsersTable = require('./migrations/create_users_table');
-const createTokensTable = require('./migrations/create_tokens_table');
+require('module-alias/register'); // load module alias register
+
+const createUsersTable = require('@database/migrations/create_users_table');
+const createTokensTable = require('@database/migrations/create_tokens_table');
 
 async function migrate() {
 	try {

@@ -3,3 +3,6 @@ node_modules/
 
 # Ignore all logs
 logs/*
+
+# Ignore environment file
+.env

@@ -32,7 +32,7 @@ class RateLimiter {
 	    	if (this.rateLimitMap[ip].length >= this.limit) {
 	      		const message = 'Too many requests. Please try again later.';
 
-	      		console.log('Error: ' +message);
+	      		Log.error('Error: ' +message);
 
 	      		res.writeHead(429, { 
 					'Content-Type': 'application/json' 
@@ -50,6 +50,8 @@ class RateLimiter {
 	    	// Proceed to next middleware or route handler
 	    	next();
 		} catch (err) {
+			Log.error(err.stack ?? err.message);
+			
 			res.writeHead(500, { 'Content-Type': 'application/json' });
 
 			res.end(JSON.stringify({ message: 'Internal Server Error' }));

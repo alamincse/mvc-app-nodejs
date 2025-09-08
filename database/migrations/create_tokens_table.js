@@ -1,4 +1,4 @@
-const db = require('../../config/db');
+const db = require('@config/db');
 
 const createTokensTable = `
 CREATE TABLE IF NOT EXISTS tokens (

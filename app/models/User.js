@@ -1,4 +1,4 @@
-const Model = require('../../system/Model');
+const Model = require('@engine/Model');
 
 class User extends Model {
 	constructor() {

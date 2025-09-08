@@ -1,13 +1,14 @@
-const Route = require('../../system/Route');
-const webRoutes = require('../../routes/web');
-const apiRoutes = require('../../routes/api');
-const RateLimiter = require('../middleware/RateLimiter');
-const RouteLogger = require('../middleware/RouteLogger');
-const RequestLogger = require('../middleware/RequestLogger');
-const XssProtection = require("../middleware/XssProtection");
-const CsrfMiddleware = require('../middleware/CsrfMiddleware');
-const CorsMiddleware = require('../middleware/CorsMiddleware');
-const SecurityHeadersMiddleware = require('../middleware/SecurityHeadersMiddleware');
+const config = require('@config/app');
+const Route = require('@engine/Route');
+const webRoutes = require('@routes/web');
+const apiRoutes = require('@routes/api');
+const RateLimiter = require('@engine/middleware/RateLimiter');
+const RouteLogger = require('@engine/middleware/RouteLogger');
+const XssProtection = require("@engine/middleware/XssProtection");
+const RequestLogger = require('@engine/middleware/RequestLogger');
+const CsrfMiddleware = require('@engine/middleware/CsrfMiddleware');
+const CorsMiddleware = require('@engine/middleware/CorsMiddleware');
+const SecurityHeadersMiddleware = require('@engine/middleware/SecurityHeadersMiddleware');
 
 class RouteServiceProvider {
 	/**
@@ -78,10 +79,21 @@ class RouteServiceProvider {
     }
 
 
-	/**
-	 * Load all application routes (web + api) into a single route instance
-	 * with proper prefix handling and apply global middlewares like RateLimiter, RouteLogger.
-	 */
+   /**
+    * Load all application routes (both web and API) into a single Route instance.
+    *
+    * This method performs the following tasks:
+    * 1. Creates a new Route instance to hold all routes.
+    * 2. Applies global middlewares separately for web and API routes, such as:
+    *    - RateLimiter
+    *    - RouteLogger
+    * 3. Merges web routes directly into the router without any prefix.
+    * 4. Merges API routes into the router with a configurable prefix
+    *    (default '/api', can be overridden via config.apiPrefix).
+    * 5. Returns the combined Route instance containing both web and API routes.
+    *
+    * @returns {Route} A Route instance containing all registered web and API routes.
+    */
 	loadRoutes() {
 		const Router = new Route();
 
@@ -96,7 +108,7 @@ class RouteServiceProvider {
 
 		// Merge API routes with '/api' prefix
 		if (! this.isEmptyObject(apiRoutes)) {
-			Router.mergeWithPrefix(apiRoutes, '/api');
+      Router.mergeWithPrefix(apiRoutes, config.apiPrefix);
 		}
 
 		// console.log(Router) 

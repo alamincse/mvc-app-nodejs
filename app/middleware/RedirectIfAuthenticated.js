@@ -1,9 +1,9 @@
-const { validateToken, verifyToken, parseCookies } =  require('../../helpers/utilities');
+const { verifyToken } =  require('@helpers/utilities');
 
 class RedirectIfAuthenticated {
 	handle = async (req, res, next) => {
 		try {
-		    const cookies = parseCookies(req.headers.cookie || '');
+		    const cookies = parseCookies(req.headers.cookie ?? '');
 
 		    const token = cookies['session_token'];
 		    const validToken = validateToken(token);
@@ -19,6 +19,8 @@ class RedirectIfAuthenticated {
         		return res.end();
 		    }
 		} catch (err) {
+			Log.error(err.stack ?? err.message);
+
 			res.writeHead(500, { 'Content-Type': 'application/json' });
 
 			res.end(JSON.stringify({ message: 'Internal Server Error' }));
