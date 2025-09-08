@@ -711,7 +711,7 @@ const hashed = hash("password");;
 
 **Returns:** `string` (hashed hex) or `false` on error
 
-#### 5. `validateToken(token)`: Hash a string using `HMAC-SHA256`.
+#### 5. `validateToken(token)`: Validate a session token.
 ```js
 const isValid = validateToken(token);
 ```
