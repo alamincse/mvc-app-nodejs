@@ -127,6 +127,11 @@
 	        	users.forEach((user, index) => {
 	        		const tr = document.createElement('tr');
 
+	        		const deleteButton = Number(userId) === Number(user.id)
+						? `<button class="btn btn-sm btn-secondary" disabled>Delete</button>`
+						: `<button class="btn btn-sm btn-danger" onclick="deleteItem(${user.id})">Delete</button>`;
+
+
 	        		tr.innerHTML = `
 		            	<td>${index + 1}</td>
 		              	<td>${user.name || '-'}</td>
@@ -151,7 +156,7 @@
 								Edit
 							</button>
 
-							<button id="btnDelete" class="btn btn-sm btn-danger" onclick="deleteItem(${user.id})">Delete</button>
+							${deleteButton}
 						</td>
 		            `;
 
