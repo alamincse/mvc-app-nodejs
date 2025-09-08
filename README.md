@@ -85,7 +85,7 @@ project/
 │ └── api.js
 ├── engine/
 │ ├── helpers 
-| |	├── AppHelpers.js
+| |	├── appHelpers.js
 │ ├── middleware (Runtime Middleware)
 | |	├── RateLimiter.js
 │ | ├── RouteLogger.js
