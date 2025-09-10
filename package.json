@@ -1,6 +1,6 @@
 {
 	"name": "MVC APP",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "A lightweight Node.js APP following MVC architecture without Express.",
 	"main": "server.js",
 	"author": "Al-Amin Sarker <cseal.amin.09@gmail.com>",
